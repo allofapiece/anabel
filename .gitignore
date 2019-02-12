@@ -1,0 +1,17 @@
+# IntelliJ IDEA project files
+.idea
+*.iml
+target
+out
+
+# log files
+*\.log
+
+# node vendor dir
+node_modules
+
+# gulp cache
+.gulp-scss-cache
+
+# local properties
+/**/*-local.properties
