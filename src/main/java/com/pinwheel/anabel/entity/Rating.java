@@ -8,12 +8,12 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-public class Feedback {
+public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String text;
+    private Integer value;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")

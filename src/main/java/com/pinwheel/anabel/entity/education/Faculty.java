@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.entity;
+package com.pinwheel.anabel.entity.education;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,21 +13,12 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
-public class Section {
+public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
-
-    private String description;
-
-    private String icon;
-
-    private String slug;
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
 
     @CreationTimestamp
     private Timestamp createdAt;
@@ -35,10 +26,10 @@ public class Section {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name="parent_id")
-    private Section parent;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "establishment_id")
+    private Establishment establishment;
 
-    @OneToMany(mappedBy="parent", cascade = CascadeType.ALL)
-    private Set<Section> children = new HashSet<>();
+    @OneToMany(mappedBy = "faculty")
+    private Set<Speciality> specialities = new HashSet<>();
 }
