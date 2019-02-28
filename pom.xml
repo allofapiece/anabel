@@ -58,6 +58,10 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
 
         <!-- Testing -->
         <dependency>
@@ -75,6 +79,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <project.resources>src/main/resources</project.resources>
+        <flyway.configFiles>${project.resources}/db/config/flyway.conf,${project.resources}/db/config/flyway-local.conf</flyway.configFiles>
     </properties>
 
     <build>

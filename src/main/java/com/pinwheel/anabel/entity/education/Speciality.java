@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.entity;
+package com.pinwheel.anabel.entity.education;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,27 +7,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Section {
+public class Speciality {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
-
-    private String description;
-
-    private String icon;
-
-    private String slug;
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
 
     @CreationTimestamp
     private Timestamp createdAt;
@@ -35,10 +26,11 @@ public class Section {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name="parent_id")
-    private Section parent;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
-    @OneToMany(mappedBy="parent", cascade = CascadeType.ALL)
-    private Set<Section> children = new HashSet<>();
+    @OneToMany(mappedBy = "speciality")
+    @MapKey(name = "number")
+    private Map<String, Group> groups = new HashMap<>();
 }
