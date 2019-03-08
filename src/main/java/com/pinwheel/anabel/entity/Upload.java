@@ -39,8 +39,8 @@ public class Upload {
     private Timestamp updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany(mappedBy = "uploads")
     private Set<Order> orders = new HashSet<>();

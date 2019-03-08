@@ -23,11 +23,11 @@ public class Company {
             cascade = {CascadeType.ALL}
             )
     @JoinTable(
-            name = "company_account",
+            name = "company_user",
             joinColumns = { @JoinColumn(name = "company_id") },
-            inverseJoinColumns = { @JoinColumn(name = "account_id") }
+            inverseJoinColumns = { @JoinColumn(name = "user_id") }
             )
-    private Set<Account> employees = new HashSet<>();
+    private Set<User> employees = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

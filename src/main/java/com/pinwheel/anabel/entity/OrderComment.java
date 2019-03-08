@@ -25,8 +25,8 @@ public class OrderComment {
     private Timestamp updatedAt;
 
     @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")

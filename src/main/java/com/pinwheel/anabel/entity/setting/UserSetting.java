@@ -1,6 +1,6 @@
 package com.pinwheel.anabel.entity.setting;
 
-import com.pinwheel.anabel.entity.Account;
+import com.pinwheel.anabel.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,14 +9,14 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-public class AccountSetting {
+public class UserSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name = "setting_id")
@@ -26,7 +26,5 @@ public class AccountSetting {
     @JoinColumn(name = "allowed_setting_value_id")
     private AllowedSettingValue allowedSettingValue;
 
-
     private String unconstrainedValue;
-
 }

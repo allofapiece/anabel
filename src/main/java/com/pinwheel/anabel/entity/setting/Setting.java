@@ -17,19 +17,14 @@ public class Setting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     private String description;
-
 
     @Type(type = "boolean")
     private boolean constrained;
 
-
     private String dataType;
 
-
     private Double minValue;
-
 
     private Double maxValue;
 
