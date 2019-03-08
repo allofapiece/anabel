@@ -19,7 +19,7 @@ public class Tag {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
-    private Account author;
+    private User author;
 
     @ManyToMany(mappedBy = "tags")
     private Set<Order> orders = new HashSet<>();

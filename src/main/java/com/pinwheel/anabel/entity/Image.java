@@ -35,5 +35,5 @@ public class Image {
     private Map<String, Thumbnail> thumbnails = new HashMap<>();
 
     @OneToOne(mappedBy = "avatar")
-    private Account account;
+    private User user;
 }

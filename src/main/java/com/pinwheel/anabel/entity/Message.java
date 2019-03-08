@@ -18,11 +18,11 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
-    private Account author;
+    private User author;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_id")
-    private Account receiver;
+    private User receiver;
 
     private String text;
 
