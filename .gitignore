@@ -16,3 +16,6 @@ node_modules
 # local properties
 /**/*-local.properties
 /**/*-local.conf
+
+# compiled assets
+src/main/resources/static/assets
