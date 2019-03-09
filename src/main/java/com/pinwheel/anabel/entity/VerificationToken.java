@@ -45,7 +45,7 @@ public class VerificationToken {
     /**
      * Represents date of token expiration.
      */
-    private Date expiryDate;
+    private Date expire;
 
     /**
      * Calculates expiration data for writing in database.

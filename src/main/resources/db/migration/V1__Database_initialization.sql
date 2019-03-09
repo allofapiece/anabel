@@ -263,6 +263,15 @@ CREATE TABLE `user`
   PRIMARY KEY (`id`)
 ) ENGINE = MyISAM;
 
+CREATE TABLE `verification_token`
+(
+  `id`                BIGINT    NOT NULL AUTO_INCREMENT,
+  `user_id`           BIGINT,
+  `token`             VARCHAR(255),
+  `expire`            DATE,
+  PRIMARY KEY (`id`)
+) ENGINE = MyISAM;
+
 CREATE TABLE `company_user`
 (
   `company_id` BIGINT NOT NULL,
@@ -311,6 +320,8 @@ CREATE TABLE `user_role` (
 
 ALTER TABLE `user`
   ADD CONSTRAINT `fk-user-image_id` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`);
+ALTER TABLE `verification_token`
+  ADD CONSTRAINT `fk-verification_token-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `user_setting`
   ADD CONSTRAINT `fk-user_setting-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `user_setting`
