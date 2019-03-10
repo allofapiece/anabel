@@ -4,8 +4,9 @@
 target
 out
 
-# log files
+# log files and other runtime content
 *\.log
+runtime
 
 # node vendor dir
 node_modules
