@@ -1,0 +1,23 @@
+.social-networks {
+  text-align: center;
+
+  ul {
+    list-style: none;
+
+    li {
+      a {
+        background-color: $blue-100;
+        margin-right: .75rem;
+        font-size: 1.5rem;
+
+        @include box-shadow($box-shadow-sm);
+        @include border-radius(50%);
+
+        &:hover {
+          background-color: $blue-200;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
