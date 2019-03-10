@@ -1,0 +1,4 @@
+.navbar {
+  background-color: $blue-300;
+  @include box-shadow($navbar-box-shadow);
+}

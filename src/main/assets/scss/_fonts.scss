@@ -1,0 +1,23 @@
+@include font('OpenSans', $font-weight-light, (normal, italic));
+@include font('OpenSans', $font-weight-normal, (normal, italic));
+@include font('OpenSans', 600, (normal, italic));
+@include font('OpenSans', $font-weight-bold, (normal, italic));
+@include font('OpenSans', 800, (normal, italic));
+
+@include font('Exo', $font-weight-thin, (normal, italic));
+@include font('Exo', 200, (normal, italic));
+@include font('Exo', $font-weight-light, (normal, italic));
+@include font('Exo', $font-weight-normal, (normal, italic));
+@include font('Exo', $font-weight-medium, (normal, italic));
+@include font('Exo', 600, (normal, italic));
+@include font('Exo', $font-weight-bold, (normal, italic));
+@include font('Exo', 800, (normal, italic));
+@include font('Exo', $font-weight-black, (normal, italic));
+
+@include font('Manrope', $font-weight-thin);
+@include font('Manrope', $font-weight-light);
+@include font('Manrope', $font-weight-normal);
+@include font('Manrope', $font-weight-medium);
+@include font('Manrope', 600);
+@include font('Manrope', $font-weight-bold);
+@include font('Manrope', 800);

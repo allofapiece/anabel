@@ -1,0 +1,95 @@
+/**
+ * Registers fonts. Resolves path to font file by passed font-family, font-weight, font-style and types.
+ * According on font $types, will be included specific fonts and assigned to compatible formats.
+ *
+ * @example
+ * font('OpenSans', 400, (normal), ("otf")) => "fonts/OpenSans/400-normal.otf"
+ *
+ * @param $font-family [Sass::Script::Value::String] name of font.
+ * @param $font-weight [Sass::Script::Value::Number] weight of registered font.
+ * @param $font-styles [Sass::Script::Value::List] list of font styles.
+ * @param $types [Sass::Script::Value::List] list of font types. Determines which fonts extensions will be included.
+ */
+@mixin font($font-family, $font-weight, $font-styles: (normal), $types: ("otf")) {
+  @each $font-style in $font-styles {
+    $font-file: '../fonts/#{$font-family}/#{$font-weight}-#{$font-style}';
+    $font-src: '';
+
+    @if index($types, "iefix") != null {
+      @if ($font-src != '') {
+        $font-src: #{$font-src + ','};
+      }
+
+      $font-src: #{$font-src + url('#{$font-file}.eot?#iefix') format('embedded-opentype')};
+    }
+
+    @if index($types, "woff") != null {
+      @if ($font-src != '') {
+        $font-src: #{$font-src + ','};
+      }
+
+      $font-src: #{$font-src + url('#{$font-file}.woff') format('woff')};
+    }
+
+    @if index($types, "otf") != null {
+      @if ($font-src != '') {
+        $font-src: #{$font-src + ','};
+      }
+
+      $font-src: #{$font-src + url('#{$font-file}.otf') format('truetype')};
+    }
+
+    @if index($types, "ttf") != null {
+      @if ($font-src != '') {
+        $font-src: #{$font-src + ','};
+      }
+
+      $font-src: #{$font-src + url('#{$font-file}.ttf') format('truetype')};
+    }
+
+    @if index($types, "eot") != null {
+      @if ($font-src != '') {
+        $font-src: #{$font-src + ','};
+      }
+
+      $font-src: #{$font-src + url('#{$font-file}.eot')};
+    }
+
+    @font-face {
+      font-family: $font-family;
+      src: $font-src;
+      font-weight: $font-weight;
+      font-style: $font-style;
+      font-display: auto;
+    }
+  }
+}
+
+@mixin icomoon-content($content, $pseudo: before) {
+  &:#{$pseudo} {
+    content: $content;
+  }
+}
+
+@mixin icomoon($content: '', $pseudo: before) {
+  &:#{$pseudo} {
+    display: inline-block;
+    font-family: icomoon;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: auto;
+    speak: none;
+    margin: 0;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    vertical-align: baseline;
+    width: auto;
+  }
+
+  @include icomoon-content($content, $pseudo)
+}
