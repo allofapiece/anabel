@@ -1,27 +1,35 @@
+<#import "/spring.ftl" as s/>
+
 <footer class="px-3">
     <div class="text-center text-md-left">
         <div class="row mt-3">
             <div class="footer-sections">
                 <div class="footer-section col-md-3 col-lg-4 col-xl-3">
-                    <h6>Anabel</h6>
+                    <h6><@s.message "general.site.name"/></h6>
                     <hr class="mb-4 mt-0">
-                    <p>If you can program or have other useful skills and want to join our team, <a href="#">write to us</a>.
-                        Perhaps you are the one we need!</p>
+                    <p><@s.message "footer.link.write.us.0"/>, <a href="#"><@s.message "footer.link.write.us.1"/></a>.
+                        <@s.message "footer.link.write.us.2"/>!</p>
                 </div>
                 <div class="footer-section col-md-2 col-lg-2 col-xl-2">
-                    <h6>Contacts</h6>
+                    <h6><@s.message "footer.link.header.contacts"/></h6>
                     <hr class="mb-4 mt-0">
-                    <p><a href="#">Report a bug</a></p>
-                    <p><a href="#">Advertise</a></p>
-                    <p><a href="#">Rights violation</a></p>
+                    <p><a href="#"><@s.message "footer.link.report-bug"/></a></p>
+                    <p><a href="#"><@s.message "footer.link.advertise"/></a></p>
+                    <p><a href="#"><@s.message "footer.link.violation.rights"/></a></p>
                 </div>
                 <div class="footer-section col-md-3 col-lg-2 col-xl-2">
-                    <h6>To read</h6>
+                    <h6><@s.message "footer.link.header.to-read"/></h6>
                     <hr class="mb-4 mt-0">
-                    <p><a href="#">About Anabel</a></p>
-                    <p><a href="#">About company</a></p>
-                    <p><a href="#">Terms of use</a></p>
-                    <p><a href="#">Privacy</a></p>
+                    <p><a href="#"><@s.message "footer.link.about.project"/></a></p>
+                    <p><a href="#"><@s.message "footer.link.about.company"/></a></p>
+                    <p><a href="#"><@s.message "footer.link.terms-of-user"/></a></p>
+                    <p><a href="#"><@s.message "footer.link.privacy-policy"/></a></p>
+                </div>
+                <div class="footer-section langs col-md-3 col-lg-2 col-xl-2">
+                    <h6><@s.message "general.languages"/></h6>
+                    <hr class="mb-4 mt-0">
+                    <p><a class="lang" data-lang="en" href=""><@s.message "general.languages.en"/></a></p>
+                    <p><a class="lang" data-lang="ru" href=""><@s.message "general.languages.ru"/></a></p>
                 </div>
             </div>
         </div>

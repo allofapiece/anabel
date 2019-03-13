@@ -38,16 +38,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/signup", "/static/**").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/signup", "/lang", "/static/**").permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
+                    .formLogin()
+                    .loginPage("/login")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/", true)
-                .permitAll()
+                    .defaultSuccessUrl("/", true)
+                    .permitAll()
                 .and()
-                .logout()
+                    .logout()
                 .permitAll();
     }
 
