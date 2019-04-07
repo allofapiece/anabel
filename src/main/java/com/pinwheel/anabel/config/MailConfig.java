@@ -1,5 +1,6 @@
 package com.pinwheel.anabel.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import java.util.Properties;
  * @version 1.0.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class MailConfig {
     /**
      * Host of sending emails service.
@@ -58,7 +60,7 @@ public class MailConfig {
      * @return {@link JavaMailSender} bean.
      */
     @Bean
-    public JavaMailSender getMailSender() {
+    public JavaMailSender mailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         mailSender.setHost(host);

@@ -27,7 +27,7 @@ public class HomeController {
 
     /**
      * Uses for switching languages. Though spring framework is able to intercept request and analyze necessary locale,
-     * Spring MVC and Spring Security is separated parts of framework and default implementation of
+     * Spring MVC and Spring Security is separated layout of framework and default implementation of
      * {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor LocaleChangeInterceptor} is not able to
      * intercept requests for controllers, which has been added by {@code addViewControllers} method of
      * {@link org.springframework.web.servlet.config.annotation.WebMvcConfigurer WebMvcConfigurer}.

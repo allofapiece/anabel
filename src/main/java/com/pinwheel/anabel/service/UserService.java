@@ -4,6 +4,7 @@ import com.pinwheel.anabel.entity.Role;
 import com.pinwheel.anabel.entity.Status;
 import com.pinwheel.anabel.entity.User;
 import com.pinwheel.anabel.repository.UserRepository;
+import com.pinwheel.anabel.service.mail.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
