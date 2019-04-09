@@ -15,11 +15,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.ExtendedModelMap;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -58,7 +60,9 @@ public class NotificationServiceUnitTest {
         Mockito.doReturn(true).when(emailNotifier).send(user, emailMessage);
         Mockito.doReturn(emailNotifier).when(notifierResolver).resolve("email");
 
-        assertTrue(notificationService.put("email", user, emailMessage).send());
+        assertTrue(notificationService.send(Notification.builder()
+                .put("email", user, emailMessage)
+                .build()));
 
         Mockito.verify(notifierResolver, Mockito.times(1)).resolve("email");
         Mockito.verify(emailNotifier, Mockito.times(1)).send(user, emailMessage);
@@ -80,30 +84,12 @@ public class NotificationServiceUnitTest {
         Mockito.doReturn(true).when(emailNotifier).send(any(User.class), eq(emailMessage));
         Mockito.doReturn(emailNotifier).when(notifierResolver).resolve("email");
 
-        assertTrue(notificationService
-                .setMessage(emailMessage)
-                .put("email", user, emailMessage)
-                .put(emailNotifier, user2)
-                .send());
+        assertTrue(notificationService.send(Notification.builder()
+                .put("email", Arrays.asList(user, user2), emailMessage)
+                .build()));
 
         Mockito.verify(notifierResolver, Mockito.times(1)).resolve("email");
         Mockito.verify(emailNotifier, Mockito.times(2)).send(any(User.class), eq(emailMessage));
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenDefaultMessageNotSet() {
-        User user = new User();
-        user.setId(1L);
-
-        EmailNotificationMessage emailMessage = EmailNotificationMessage.builder()
-                .build();
-
-        Mockito.doReturn(true).when(emailNotifier).send(emailMessage);
-
-        assertThrows(IllegalNotificationStateException.class, () -> notificationService
-                .put(emailNotifier, user));
-
-        Mockito.verify(notifierResolver, Mockito.never()).resolve("email");
     }
 
     @Test
@@ -124,10 +110,10 @@ public class NotificationServiceUnitTest {
         Mockito.doReturn(emailNotifier).when(notifierResolver).resolve("email");
         Mockito.doReturn(flushNotifier).when(notifierResolver).resolve("flush");
 
-        assertFalse(notificationService
+        assertFalse(notificationService.send(Notification.builder()
                 .put("email", user, emailMessage)
                 .put("flush", user, flushMessage)
-                .send());
+                .build()));
 
         Mockito.verify(notifierResolver, Mockito.times(2)).resolve(anyString());
 
@@ -157,6 +143,10 @@ public class NotificationServiceUnitTest {
         FlushNotificationMessage flushMessage = new FlushNotificationMessage();
         flushMessage.setModel(new ExtendedModelMap());
 
+        Mockito.doReturn(emailNotifier).when(notifierResolver).resolve("email");
+        Mockito.doReturn(webNotifier).when(notifierResolver).resolve("web");
+        Mockito.doReturn(flushNotifier).when(notifierResolver).resolve("flush");
+
         Mockito.doReturn(true).when(emailNotifier).send(any(User.class), any(EmailNotificationMessage.class));
         Mockito.doReturn(true).when(webNotifier).send(any(User.class), any(WebNotificationMessage.class));
         Mockito.doReturn(true).when(flushNotifier).send(any(User.class), any(NotificationMessage.class));
@@ -164,13 +154,13 @@ public class NotificationServiceUnitTest {
         Predicate<User> condition = pUser -> pUser.getStatus().equals(Status.ACTIVE);
         Predicate<User> condition2 = pUser -> pUser.getId() != null;
 
-        assertTrue(notificationService
-                .put(emailNotifier, list, emailMessage)
-                .put(webNotifier, list, webMessage)
-                .put(flushNotifier, list, flushMessage)
-                .addCondition(condition)
-                .addCondition(condition2)
-                .send());
+        assertTrue(notificationService.send(Notification.builder()
+                .put("email", list, emailMessage)
+                .put("web", list, webMessage)
+                .put("flush", list, flushMessage)
+                .condition(condition)
+                .condition(condition2)
+                .build()));
 
         Mockito.verify(emailNotifier, Mockito.times(1)).send(eq(user), eq(emailMessage));
         Mockito.verify(webNotifier, Mockito.times(1)).send(eq(user), eq(webMessage));
