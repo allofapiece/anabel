@@ -5,6 +5,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
  * Notifier for setting frontend alert messages. Alert messages represent bootstrap alert messages.
  *
@@ -31,9 +34,25 @@ public class FlushNotifier implements Notifier {
      * @return whether flush message has been set.
      */
     public boolean send(User user, FlushNotificationMessage message) {
-        if ((user == null || isCurrentUser(user)) && message.getModel() != null) {
+        if (message.getModel() != null) {
             message.getModel().addAttribute("flushStatus", message.getStatus().name().toLowerCase());
             message.getModel().addAttribute("flushMessage", message.getMessage());
+
+            return true;
+        }
+
+        if (message.getRedirectAttributes() != null) {
+            message.getRedirectAttributes().addFlashAttribute("flushStatus", message.getStatus().name().toLowerCase());
+            message.getRedirectAttributes().addFlashAttribute("flushMessage", message.getMessage());
+
+            return true;
+        }
+
+        if (message.getRequest() != null) {
+            HttpSession session = message.getRequest().getSession(true);
+
+            session.setAttribute("flushStatus", message.getStatus().name().toLowerCase());
+            session.setAttribute("flushMessage", message.getMessage());
 
             return true;
         }
@@ -49,7 +68,13 @@ public class FlushNotifier implements Notifier {
     protected User currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return authentication != null ? (User) authentication.getPrincipal() : null;
+        if (authentication == null) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        return principal instanceof String ? null : (User) principal;
     }
 
     /**

@@ -36,7 +36,6 @@ public class EmailNotifier implements Notifier {
      * @param message email notification message.
      * @return whether message will be sent.
      */
-    @Async
     public boolean send(EmailNotificationMessage message) {
         return mailSender.send(message);
     }

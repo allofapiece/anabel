@@ -1,6 +1,11 @@
 package com.pinwheel.anabel.service.notification;
 
+import com.pinwheel.anabel.entity.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Email notification message factory. Extends {@link NotificationMessageFactory}. Contains factory methods for getting
@@ -11,14 +16,41 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EmailNotificationMessageFactory extends NotificationMessageFactory {
+
+    /**
+     * Determines whether ssl enabled.
+     */
+    @Value("${server.ssl.enabled}")
+    private boolean sslEnabled;
+
+    /**
+     * Current server address.
+     */
+    @Value("${server.address}")
+    private String serverAddress;
+
+    protected String getCurrentServerUrl() {
+        return String.format("%s://%s",
+                sslEnabled ? "https" : "http",
+                serverAddress);
+    }
+
     /**
      * Returns ready sign up {@link EmailNotificationMessage email notification message} object.
      *
      * @return email notification message for sign up.
      */
-    public NotificationMessage createSignup() {
+    public NotificationMessage createSignup(User user) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("link", String.format("%s/activate/%s",
+                getCurrentServerUrl(),
+                user.getLastVerificationToken().getToken()));
+
         return EmailNotificationMessage.builder()
-                .message("Signup message")
+                .template("signup.ftl")
+                .subject("Anabel account activation")
+                .message("We are glad to see in our service")
+                .model(model)
                 .build();
     }
 }

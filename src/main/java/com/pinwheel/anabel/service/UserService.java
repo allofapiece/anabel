@@ -1,21 +1,19 @@
 package com.pinwheel.anabel.service;
 
-import com.pinwheel.anabel.entity.Role;
-import com.pinwheel.anabel.entity.Status;
-import com.pinwheel.anabel.entity.User;
+import com.pinwheel.anabel.entity.*;
+import com.pinwheel.anabel.event.OnRegistrationCompleteEvent;
 import com.pinwheel.anabel.repository.UserRepository;
-import com.pinwheel.anabel.service.mail.MailSender;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.UUID;
+import java.util.List;
 
 /**
  * User service. Provides logic for users.
@@ -27,12 +25,6 @@ import java.util.UUID;
 @Service
 public class UserService implements UserDetailsService {
     /**
-     * Current server address.
-     */
-    @Value("${server.address}")
-    private String serverAddress;
-
-    /**
      * Injection of user repository.
      */
     private final UserRepository userRepository;
@@ -43,9 +35,14 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Injection of mail sender.
+     * Injection of {@link VerificationTokenService} bean.
      */
-    private final MailSender mailSender;
+    private final VerificationTokenService verificationTokenService;
+
+    /**
+     * Injection of {@link ApplicationEventPublisher} bean.
+     */
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * {@inheritDoc}
@@ -68,62 +65,88 @@ public class UserService implements UserDetailsService {
      * @param user User for saving in database.
      * @return true or false, denotes whether user has been saved.
      */
-    public boolean addUser(User user) {
+    public User createUser(User user) {
         User userFromDb = userRepository.findByEmail(user.getEmail());
 
         if (userFromDb != null) {
-            return false;
+            return null;
         }
 
-        user.setStatus(Status.ACTIVE);
+        user.setStatus(Status.PENDING_VERIFICATION);
         user.setRoles(Collections.singleton(Role.USER));
-        user.setConfirmationCode(UUID.randomUUID().toString());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepository.save(user);
+        this.setPasswordForUser(user, user.getPassword());
 
-        sendMessage(user);
+        user = userRepository.save(user);
 
-        return true;
-    }
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
 
-    /**
-     * Sends verification message.
-     *
-     * @param user User, for which verification message will be sent.
-     */
-    private void sendMessage(User user) {
-        if (!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to Sweater. Please, visit next link: http://%s/activate/%s",
-                    user.getUsername(),
-                    serverAddress,
-                    user.getConfirmationCode()
-            );
-
-            mailSender.send(user.getEmail(), "Activation code", message);
-        }
+        return user;
     }
 
     /**
      * Activates user by verification code.
      *
-     * @param code Verification code.
+     * @param token Verification code.
      * @return true or false, denotes whether user has been activated.
      */
-    public boolean activateUser(String code) {
-        User user = userRepository.findByConfirmationCode(code);
+    public boolean activateUser(String token) {
+        VerificationToken verificationToken = verificationTokenService.findByToken(token);
+        User user = verificationToken.getUser();
 
         if (user == null) {
             return false;
         }
 
-        user.setConfirmationCode(null);
+        if (verificationTokenService.isExpired(verificationToken)) {
+            return false;
+        }
+
+        verificationTokenService.reject(verificationToken);
+        user.setStatus(Status.ACTIVE);
 
         userRepository.save(user);
 
         return true;
     }
 
+    public void setPasswordForUser(User user, String value, boolean useEncoder) {
+        value = useEncoder ? passwordEncoder.encode(value) : value;
+
+        List<Password> passwords = user.getPasswords();
+        Password password = null;
+
+        if (!passwords.isEmpty() && passwords.get(0).getId() == null) {
+            password = passwords.get(0);
+            password.setValue(value);
+
+            if (passwords.size() > 1) {
+                setPasswordsAsExpired(passwords.subList(1, passwords.size() - 1));
+            }
+        } else {
+            password = Password.builder()
+                    .value(value)
+                    .status(Status.ACTIVE)
+                    .build();
+
+            if (password.getStatus().equals(Status.ACTIVE)) {
+                setPasswordsAsExpired(passwords);
+            }
+
+            passwords.add(0, password);
+        }
+
+        password.setUser(user);
+    }
+
+    public void setPasswordForUser(User user, String value) {
+        this.setPasswordForUser(user, value, true);
+    }
+
+    public void setPasswordsAsExpired(List<Password> passwords) {
+        passwords.stream()
+                .filter(pass -> pass.getStatus().equals(Status.ACTIVE))
+                .findAny()
+                .ifPresent(activePassword -> activePassword.setStatus(Status.EXPIRED));
+    }
 }

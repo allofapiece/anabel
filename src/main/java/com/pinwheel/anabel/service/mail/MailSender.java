@@ -2,6 +2,7 @@ package com.pinwheel.anabel.service.mail;
 
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * Email Sender. Service for sending emails.
@@ -20,12 +21,12 @@ public interface MailSender {
      * @param multiPartMode multipart mode of {@link org.springframework.mail.javamail.MimeMessageHelper}.
      * @param charset       using charset.
      */
-    boolean send(String to,
-                 String subject,
-                 String templateName,
-                 Map<String, Object> model,
-                 int multiPartMode,
-                 Charset charset);
+    Future<Boolean> send(String to,
+                String subject,
+                String templateName,
+                Map<String, Object> model,
+                int multiPartMode,
+                Charset charset);
 
     /**
      * Sends email.
@@ -34,7 +35,7 @@ public interface MailSender {
      * @param subject subject of the email.
      * @param message mail message.
      */
-    boolean send(String to, String subject, String message);
+    Future<Boolean> send(String to, String subject, String message);
 
     /**
      * Sets general template name property.

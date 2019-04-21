@@ -6,9 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Config for spring web security.
@@ -31,6 +36,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private final PasswordEncoder passwordEncoder;
 
+    private final AuthenticationFailureHandler authenticationFailureHandler;
+
+    @PostConstruct
+    public void init() {
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -38,10 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/signup", "/lang", "/static/**").permitAll()
+                    .antMatchers("/", "/signup", "/activate/*", "/lang", "/static/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
+                    .failureHandler(authenticationFailureHandler)
                     .loginPage("/login")
                 .usernameParameter("email")
                     .defaultSuccessUrl("/", true)

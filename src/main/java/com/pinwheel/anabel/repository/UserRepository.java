@@ -17,12 +17,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return found user entity.
      */
     User findByEmail(String email);
-
-    /**
-     * Finds user by confirmation code.
-     *
-     * @param confirmationCode confirmation code.
-     * @return found user entity.
-     */
-    User findByConfirmationCode(String confirmationCode);
 }

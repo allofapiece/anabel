@@ -18,6 +18,7 @@ import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,9 +38,9 @@ class SimpleMailSenderUnitTest {
     static SmtpServer smtpServer = new SmtpServer(2525);
 
     @Test
-    public void shouldSendValidEmailMessage() throws MessagingException {
+    public void shouldSendValidEmailMessage() throws MessagingException, ExecutionException, InterruptedException {
         Map<String, Object> map = new HashMap<>();
-        map.put("text", "Payload");
+        map.put("message", "Payload");
 
         String subject = "Anabel";
         String to = "testemail@email.com";
@@ -51,7 +52,7 @@ class SimpleMailSenderUnitTest {
                 map,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8
-        ));
+        ).get());
 
         MimeMessage[] receivedMessages = smtpServer.getMessages();
         assertEquals(1, receivedMessages.length);
@@ -68,14 +69,14 @@ class SimpleMailSenderUnitTest {
     }
 
     @Test
-    public void shouldSendValidEmailMessageWithDefaultValues() throws MessagingException {
+    public void shouldSendValidEmailMessageWithDefaultValues() throws MessagingException, ExecutionException, InterruptedException {
         mailSender.setGeneralTemplateName("test.ftl");
 
         String subject = "Anabel";
         String to = "testemail@email.com";
         String message = "Payload";
 
-        assertTrue(mailSender.send(to, subject, message));
+        assertTrue(mailSender.send(to, subject, message).get());
 
         MimeMessage[] receivedMessages = smtpServer.getMessages();
         assertEquals(1, receivedMessages.length);

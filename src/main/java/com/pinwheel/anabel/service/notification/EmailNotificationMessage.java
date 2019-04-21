@@ -71,8 +71,9 @@ public class EmailNotificationMessage extends NotificationMessage {
     public EmailNotificationMessage(String message, int multiPartMode, Charset charset, String subject,
                                     String to, String from, String template, Map<String, Object> model) {
         super(message);
-        this.multiPartMode = multiPartMode;
-        this.charset = charset;
+        this.message = message;
+        this.multiPartMode = multiPartMode == 0 ? MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED : multiPartMode;
+        this.charset = charset == null ? StandardCharsets.UTF_8 : charset;
         this.subject = subject;
         this.to = to;
         this.from = from;
