@@ -17,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,9 +40,8 @@ public class SimpleMailSenderUnitTest {
     static SmtpServer smtpServer = new SmtpServer(2525);
 
     @Test
-    public void shouldSendValidEmailNotificationWithFullData() throws MessagingException, IOException {
+    public void shouldSendValidEmailNotificationWithFullData() throws MessagingException {
         Map<String, Object> map = new HashMap<>();
-        map.put("text", "Payload");
         EmailNotificationMessage message = EmailNotificationMessage.builder()
                 .message("Nice")
                 .charset(StandardCharsets.UTF_8)
@@ -65,7 +63,7 @@ public class SimpleMailSenderUnitTest {
 
         String content = GreenMailUtil.toString(receivedMessage);
 
-        assertTrue(content.contains("Payload"));
+        assertTrue(content.contains("Nice"));
         assertTrue(content.contains("Testing Email"));
         assertEquals(message.getTo(), receivedMessage.getAllRecipients()[0].toString());
     }

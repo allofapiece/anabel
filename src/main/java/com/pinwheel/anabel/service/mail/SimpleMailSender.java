@@ -8,8 +8,11 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -18,11 +21,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * Simple Mail Sender. Implements Mail Sender. Service for sending emails.
  *
- * @author Listratenko Stanislav
  * @version 1.0.0
  */
 @Getter
@@ -61,8 +64,9 @@ public class SimpleMailSender implements MailSender {
     /**
      * {@inheritDoc}
      */
-    public boolean send(String to, String subject, String templateName, Map<String, Object> model, int multiPartMode,
-                        Charset charset) {
+    @Async
+    public Future<Boolean> send(String to, String subject, String templateName, Map<String, Object> model, int multiPartMode,
+                                Charset charset) {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper;
 
@@ -71,7 +75,7 @@ public class SimpleMailSender implements MailSender {
 
             model.put("applicationName", applicationName);
 
-            Template template = freemarkerConfig.getTemplate(templateName);
+            Template template = freemarkerConfig.getTemplate(templateName, LocaleContextHolder.getLocale());
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
             helper.setTo(to);
@@ -80,19 +84,19 @@ public class SimpleMailSender implements MailSender {
 
             mailSender.send(message);
         } catch (Exception e) {
-            logger.error("An error occurred while sending email.", e);
-            return false;
+            return new AsyncResult<>(false);
         }
 
-        return true;
+        return new AsyncResult<>(true);
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean send(String to, String subject, String message) {
+    @Async
+    public Future<Boolean> send(String to, String subject, String message) {
         Map<String, Object> model = new HashMap<>();
-        model.put("text", message);
+        model.put("message", message);
 
         return this.send(to, subject, generalTemplateName, model,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8);

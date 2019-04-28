@@ -1,9 +1,12 @@
 package com.pinwheel.anabel.config;
 
+import com.pinwheel.anabel.service.interceptor.SecurityInterceptor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -17,7 +20,6 @@ import java.util.Locale;
 /**
  * Spring MVC configuration.
  *
- * @author Listratenko Stanislav
  * @version 1.0.0
  */
 @Configuration
@@ -48,7 +50,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:i18n/messages");
+        messageSource.setBasenames("classpath:i18n/messages", "classpath:i18n/validation");
         messageSource.setUseCodeAsDefaultMessage(true);
         messageSource.setDefaultEncoding("UTF-8");
 
@@ -56,7 +58,7 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     /**
-     * Set up and return {@link SessionLocaleResolver} bean. Set up default locale as {@code ENGLISH}.
+     * Set up and returns {@link SessionLocaleResolver} bean. Set up default locale as {@code ENGLISH}.
      *
      * @return {@link LocaleResolver} bean.
      */
@@ -76,5 +78,28 @@ public class MvcConfig implements WebMvcConfigurer {
         final LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
+
+        final SecurityInterceptor securityInterceptor = new SecurityInterceptor();
+        registry.addInterceptor(securityInterceptor);
+    }
+
+    /**
+     * Set up and returns {@link ModelMapper} bean.
+     *
+     * @return {@link ModelMapper} bean.
+     */
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+
+    /**
+     * Set up and returns {@link RestTemplate} bean.
+     *
+     * @return {@link RestTemplate} bean.
+     */
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
     }
 }

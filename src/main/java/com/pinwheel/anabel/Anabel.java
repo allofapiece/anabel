@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableAsync(proxyTargetClass = true)
 public class Anabel {
 
     /**

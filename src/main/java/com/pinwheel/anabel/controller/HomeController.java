@@ -9,7 +9,6 @@ import java.util.Locale;
 /**
  * Home controller. Describes home pages.
  *
- * @author Listratenko Stanislav
  * @version 1.0.0
  */
 @Controller
