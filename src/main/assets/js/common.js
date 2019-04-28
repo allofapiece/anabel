@@ -4,7 +4,7 @@
 
         $.get('/lang', {lang: lang}, function (data, status) {
             if (status === "success") {
-                location.reload();
+                window.location.href = window.location.href
             }
         });
     });

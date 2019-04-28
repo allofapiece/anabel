@@ -1,9 +1,20 @@
 package com.pinwheel.anabel.service.notification;
 
 import com.pinwheel.anabel.entity.User;
+import com.sun.imageio.plugins.common.I18N;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.MessageFormat;
+import java.util.regex.Pattern;
 
 /**
  * Notifier for setting frontend alert messages. Alert messages represent bootstrap alert messages.
@@ -13,7 +24,20 @@ import org.springframework.stereotype.Service;
  * @see <a href="https://getbootstrap.com/docs/4.0/components/alerts/">Bootstrap alerts.</a>
  */
 @Service
+@RequiredArgsConstructor
 public class FlushNotifier implements Notifier {
+    private final MessageSource messageSource;
+
+    private static final String I18N_PATTERN_STRING = "(\\.[\\s])|([A-Z]+[a-z\\s]+)";
+
+    @Getter
+    private Pattern pattern;
+
+    @PostConstruct
+    public void init() {
+        pattern = Pattern.compile(I18N_PATTERN_STRING);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -31,14 +55,59 @@ public class FlushNotifier implements Notifier {
      * @return whether flush message has been set.
      */
     public boolean send(User user, FlushNotificationMessage message) {
-        if ((user == null || isCurrentUser(user)) && message.getModel() != null) {
-            message.getModel().addAttribute("flushStatus", message.getStatus().name().toLowerCase());
-            message.getModel().addAttribute("flushMessage", message.getMessage());
+        String text;
+        boolean filtered = false;
 
-            return true;
+        if (message.getMessage() != null) {
+            String m = message.getMessage();
+            Object[] args = message.getArgs();
+            text = isI18n(m)
+                    ? ((args != null && args.length != 0) ? localize(m, args) : localize(m))
+                    : m;
+        } else {
+            return false;
         }
 
-        return false;
+        if (message.getModel() != null) {
+            message.getModel().addAttribute("flushStatus", message.getStatus().name().toLowerCase());
+            message.getModel().addAttribute("flushMessage", text);
+
+            filtered = true;
+        }
+
+        if (message.getRedirectAttributes() != null) {
+            message.getRedirectAttributes().addFlashAttribute("flushStatus", message.getStatus().name().toLowerCase());
+            message.getRedirectAttributes().addFlashAttribute("flushMessage", text);
+
+            filtered = true;
+        }
+
+        if (message.getRequest() != null) {
+            HttpSession session = message.getRequest().getSession(true);
+
+            session.setAttribute("flushStatus", message.getStatus().name().toLowerCase());
+            session.setAttribute("flushMessage", text);
+
+            filtered = true;
+        }
+
+        return filtered;
+    }
+
+    public String localize(String code) {
+        return localize(code, new Object[0]);
+    }
+
+    public String localize(String code, Object[] args) {
+        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+    }
+
+    public boolean isI18n(String message) {
+        if (message.indexOf(' ') != -1) {
+            return false;
+        }
+
+        return !pattern.matcher(message).find();
     }
 
     /**
@@ -49,7 +118,13 @@ public class FlushNotifier implements Notifier {
     protected User currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return authentication != null ? (User) authentication.getPrincipal() : null;
+        if (authentication == null) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        return principal instanceof String ? null : (User) principal;
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.pinwheel.anabel.service.notification;
 
+import com.pinwheel.anabel.entity.User;
+import com.pinwheel.anabel.entity.VerificationToken;
 import com.pinwheel.anabel.external.category.Unit;
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.Test;
@@ -29,7 +31,9 @@ class NotificationMessageFactoryUnitTest {
 
     @Test
     public void shouldCreateSignupMessageAndSaveInCache() throws InvocationTargetException, IllegalAccessException {
-        assertThat(messageFactory.create("signup"), instanceOf(NotificationMessage.class));
+        User user = new User();
+        user.addVerificationToken(new VerificationToken("validToken"));
+        assertThat(messageFactory.create("signup", user), instanceOf(NotificationMessage.class));
         assertTrue(messageFactory.getCache().size() != 0);
 
         assertTrue(messageFactory.getCache().containsKey(messageFactory.getClass().getName()));

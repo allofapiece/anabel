@@ -1,12 +1,12 @@
 package com.pinwheel.anabel.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Token for user verification. Determines whether user verified his account.
@@ -16,18 +16,24 @@ import java.util.Calendar;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class VerificationToken {
     /**
-     * Determines living time of the token in minutes.
+     * Constructor for default token string.
+     *
+     * @param token token string.
      */
-    private static final int EXPIRATION = 60 * 24;
+    public VerificationToken(String token) {
+        this.token = token;
+    }
 
     /**
      * Entity primary key.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -38,26 +44,13 @@ public class VerificationToken {
     /**
      * Relative user entity.
      */
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
     /**
      * Represents date of token expiration.
      */
+    @Temporal(TemporalType.TIMESTAMP)
     private Date expire;
-
-    /**
-     * Calculates expiration data for writing in database.
-     *
-     * @param expiryTime time in minutes representing expiration time by now.
-     * @return Date of expiration.
-     */
-    private Date calculateExpiryDate(int expiryTime) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Timestamp(cal.getTime().getTime()));
-        cal.add(Calendar.MINUTE, expiryTime);
-
-        return new Date(cal.getTime().getTime());
-    }
 }

@@ -1,6 +1,6 @@
 <html>
     <body>
         <div>Testing Email</div>
-        <div>${text}</div>
+        <div>${message}</div>
     </body>
 </html>

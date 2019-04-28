@@ -1,7 +1,9 @@
 package com.pinwheel.anabel.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Type;
@@ -11,11 +13,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
+@EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id", "email", "status", "displayName", "firstName", "lastName", "about", "createdAt", "updatedAt",
+        "roles"})
 @NoArgsConstructor
 @Entity
 public class User implements UserDetails {
@@ -25,12 +28,10 @@ public class User implements UserDetails {
 
     private String email;
 
-    private String password;
-
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    private String confirmationCode;
+    private String displayName;
 
     private String firstName;
 
@@ -69,6 +70,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Order> orders = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Password> passwords = new LinkedList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VerificationToken> verificationTokens = new LinkedList<>();
+
     @Transient
     @Formula("select * from message m where m.author_id = id or m.receiver_id = id")
     @Basic(fetch = FetchType.LAZY)
@@ -76,6 +83,10 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<Upload> uploads = new HashSet<>();
+
+    public boolean isAdmin() {
+        return this.getRoles().contains(Role.ADMIN);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -105,5 +116,26 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.status == Status.ACTIVE;
+    }
+
+    public void setPassword(Password password) {
+        this.getPasswords().add(0, password);
+    }
+
+    @Override
+    public String getPassword() {
+        return !this.getPasswords().isEmpty() ? this.getPasswords().get(0).getValue() : null;
+    }
+
+    public void addVerificationToken(VerificationToken verificationToken) {
+        this.verificationTokens.add(verificationToken);
+    }
+
+    public VerificationToken getVerificationToken(int i) {
+        return this.verificationTokens.get(i);
+    }
+
+    public VerificationToken getLastVerificationToken() {
+        return !getVerificationTokens().isEmpty() ? getVerificationToken(getVerificationTokens().size() - 1) : null;
     }
 }

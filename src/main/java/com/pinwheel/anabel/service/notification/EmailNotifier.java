@@ -2,13 +2,11 @@ package com.pinwheel.anabel.service.notification;
 
 import com.pinwheel.anabel.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
  * Notifier which use email sender for sending email notifications.
  *
- * @author Listratenko Stanislav
  * @version 1.0.0
  */
 @Service
@@ -36,7 +34,6 @@ public class EmailNotifier implements Notifier {
      * @param message email notification message.
      * @return whether message will be sent.
      */
-    @Async
     public boolean send(EmailNotificationMessage message) {
         return mailSender.send(message);
     }

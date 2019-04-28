@@ -2,6 +2,8 @@ package com.pinwheel.anabel.service.notification;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +24,11 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public abstract class NotificationMessageFactory {
+    /**
+     * Logger.
+     */
+    private Logger logger = LoggerFactory.getLogger(EmailNotificationMessageFactory.class);
+
     /**
      * Prefix for finding factory methods.
      */
@@ -62,7 +69,9 @@ public abstract class NotificationMessageFactory {
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public NotificationMessage create(String name) throws InvocationTargetException, IllegalAccessException {
+    public NotificationMessage create(String name, boolean useCache, Object... args) {
+        name = name.toLowerCase();
+
         if (!prototypes.containsKey(name)) {
             throw new IllegalNotificationStateException();
         }
@@ -77,17 +86,27 @@ public abstract class NotificationMessageFactory {
             cache.put(clazz, factoryCache);
         }
 
-        if (factoryCache.containsKey(name)) {
+        if (useCache && factoryCache.containsKey(name)) {
             return factoryCache.get(name);
         }
 
         Method method = prototypes.get(name);
         method.setAccessible(true);
-        NotificationMessage message = (NotificationMessage) method.invoke(this);
 
-        factoryCache.put(name, message);
+        try {
+            NotificationMessage message = (NotificationMessage) method.invoke(this, args);
 
-        return message;
+            factoryCache.put(name, message);
+
+            return message;
+        } catch (ReflectiveOperationException e) {
+            logger.error("An error occurred resolve factory create method", e);
+            throw new IllegalNotificationStateException(e);
+        }
+    }
+
+    public NotificationMessage create(String name, Object... args) {
+        return create(name, false, args);
     }
 
     /**
