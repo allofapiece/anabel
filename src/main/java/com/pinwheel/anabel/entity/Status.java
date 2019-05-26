@@ -4,6 +4,8 @@ public enum Status {
     ACTIVE,
     PENDING_VERIFICATION,
     EXPIRED,
+    CONFLICT,
+    COMPLETED,
     BANNED,
-    DELETED;
+    DELETED
 }

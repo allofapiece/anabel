@@ -11,7 +11,19 @@
 
         <div class="collapse navbar-collapse" id="navbar-content">
             <ul class="navbar-nav mr-auto">
-
+                <#if isAdmin>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin panel</a>
+                    </li>
+                </#if>
+                <#if currentUserId != -1>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders">All orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders/own">My orders</a>
+                    </li>
+                </#if>
             </ul>
             <#if user??>
                 <a class="btn btn-primary" href="/profile"><@spring.message "link.account-profile"/></a>
