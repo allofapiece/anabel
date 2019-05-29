@@ -1,4 +1,13 @@
 .navbar {
-  background-color: $blue-300;
+  background-color: $blue-900;
+  color: $gray-200;
+
   @include box-shadow($navbar-box-shadow);
+
+  @include media-breakpoint-down('xs') {
+    .container {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 }

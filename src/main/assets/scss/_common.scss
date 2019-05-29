@@ -1,3 +1,7 @@
+hr {
+  width: 100%;
+}
+
 .social-networks {
   text-align: center;
 
@@ -6,7 +10,8 @@
 
     li {
       a {
-        background-color: $blue-100;
+        background-color: $blue-600;
+        color: $black;
         margin-right: .75rem;
         font-size: 1.5rem;
 
@@ -14,7 +19,7 @@
         @include border-radius(50%);
 
         &:hover {
-          background-color: $blue-200;
+          background-color: darken($blue-600, 5%);
           cursor: pointer;
         }
       }

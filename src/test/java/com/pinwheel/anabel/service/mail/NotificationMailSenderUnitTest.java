@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.service;
+package com.pinwheel.anabel.service.mail;
 
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.pinwheel.anabel.external.category.Unit;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         "/application-test-local.properties"
 })
 @Category(Unit.class)
-public class SimpleMailSenderUnitTest {
+public class NotificationMailSenderUnitTest {
 
     @Autowired
     private NotificationMailSender mailSender;

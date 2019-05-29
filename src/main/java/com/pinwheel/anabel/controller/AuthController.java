@@ -156,7 +156,7 @@ public class AuthController {
      * @param redirectAttributes redirect attributes for sending response to user.
      * @return redirect to login page.
      */
-    @GetMapping("/reactivate/{oldToken}")
+    @GetMapping("/reactivate/{]oldToken}")
     public String reactivate(
             @PathVariable String oldToken,
             RedirectAttributes redirectAttributes

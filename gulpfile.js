@@ -39,6 +39,11 @@ let config       = {
 const srcDir = 'src/main/assets/';
 const destDir = config.production ? 'src/main/resources/static/assets/' : 'target/classes/static/assets/';
 
+const jsLibraries = [
+    // 'node_modules/jquery.mmenu/dist/jquery.mmenu.all.js'
+    'node_modules/corenav/coreNavigation.js'
+];
+
 gulp.task('sass', function () {
     return gulp.src(srcDir + 'scss/**/*.+(sass|scss)')
         .pipe(gulpif(!config.production, plumber({errorHandler: onError}), plumber()))
@@ -84,7 +89,7 @@ gulp.task('img', function () {
 });
 
 gulp.task('js', function () {
-    return gulp.src([srcDir + 'js/**/*.js'])
+    return gulp.src([srcDir + 'js/**/*.js'].concat(jsLibraries))
         .pipe(gulpif(!config.production, plumber({errorHandler: onError}), plumber()))
         .pipe(gulpif(config.maps, sourcemaps.init()))
         .pipe(concat('scripts.min.js'))
