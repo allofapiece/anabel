@@ -1,6 +1,9 @@
 package com.pinwheel.anabel.config;
 
+import com.pinwheel.anabel.service.SectionService;
+import com.pinwheel.anabel.service.interceptor.SectionInterceptor;
 import com.pinwheel.anabel.service.interceptor.SecurityInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +26,10 @@ import java.util.Locale;
  * @version 1.0.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
+    private final SectionService sectionService;
+
     /**
      * {@inheritDoc}
      */
@@ -50,7 +56,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:i18n/messages", "classpath:i18n/validation");
+        messageSource.setBasenames("classpath:i18n/messages", "classpath:i18n/validation", "classpath:i18n/general");
         messageSource.setUseCodeAsDefaultMessage(true);
         messageSource.setDefaultEncoding("UTF-8");
 
@@ -81,6 +87,9 @@ public class MvcConfig implements WebMvcConfigurer {
 
         final SecurityInterceptor securityInterceptor = new SecurityInterceptor();
         registry.addInterceptor(securityInterceptor);
+
+        final SectionInterceptor sectionInterceptor = new SectionInterceptor(sectionService);
+        registry.addInterceptor(sectionInterceptor);
     }
 
     /**

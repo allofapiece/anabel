@@ -1,0 +1,10 @@
+.section-manage {
+  .section-delete {
+    float: right;
+    font-size: 1.5rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
