@@ -1,6 +1,3 @@
-<#--<#assign flushMessage = Session.flushMessage?then(Session.flushMessage, "")>
-<#assign flushStatus = Session.flushStatus?then(Session.flushStatus, flushStatus!"info")>-->
-
 <#if flushMessage?has_content>
     <div class="alert alert-${flushStatus} alert-dismissible fade show" role="alert">
         ${flushMessage}

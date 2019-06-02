@@ -1,23 +1,27 @@
 footer {
-  background-color: $blue-300;
+  background-color: $blue-900;
+  color: $white;
+
   @include box-shadow($box-shadow-sm);
+
   .footer-sections {
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
+    justify-content: space-between;
   }
+
   .footer-section {
     margin-top: 2.5rem;
+
     p {
       margin-bottom: 0.625rem;
     }
-    hr {
-      width: 100%;
-    }
+
     h6 {
       font-weight: $font-weight-bold;
       text-transform: uppercase;
     }
+  }
+
+  hr {
+    border-color: rgba($gray-200, .2);
   }
 }

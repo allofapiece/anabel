@@ -1,0 +1,23 @@
+.tag {
+  padding: 0 .5rem;
+  margin: .25rem;
+  background-color: $blue-300;
+  border-bottom: 1px solid rgba($red, .5);
+  font-size: 1rem;
+
+  @include border-radius(.375rem);
+
+  @include hover {
+    cursor: pointer;
+    background-color: darken($blue-300, 3%);
+  }
+
+  .tag-body {
+    display: flex;
+    color: $link-color;
+
+    .tag-name {
+      margin: 0;
+    }
+  }
+}

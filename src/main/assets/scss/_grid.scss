@@ -1,0 +1,19 @@
+// Row
+//
+// Rows contain and clear the floats of your columns.
+
+/**
+ * Makes classes of the form "in-row-1", which describe the number of elements in a row. These classes are required
+ * when flex is set so that objects are the same width.
+ */
+@if $enable-grid-classes {
+  @each $breakpoint in map-keys(map-reverse($grid-breakpoints)) {
+    @for $i from 1 through 3 {
+      .in-row-#{$breakpoint}-#{$i} {
+        @include media-breakpoint-down($breakpoint) {
+          width: calc((100% - (#{$i} - 1) * .25rem * 2 - .25rem * 2) / #{$i});
+        }
+      }
+    }
+  }
+}
