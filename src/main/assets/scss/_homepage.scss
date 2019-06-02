@@ -1,0 +1,242 @@
+#homepage {
+  .homepage-banner {
+    background: 50% no-repeat;
+    background-size: cover;
+    position: relative;
+
+    &:before {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background: rgba($black, .5);
+    }
+
+    .banner-content {
+      color: $white;
+      padding: 2rem 0;
+    }
+
+    .banner-heading {
+      margin-bottom: .875rem;
+    }
+
+    .banner-quote {
+      font-size: 1.125rem;
+      font-weight: $font-weight-normal;
+      line-height: 1.3;
+      margin-bottom: 1.25rem;
+    }
+
+    @include media-breakpoint-up(sm) {
+      .banner-content {
+        padding-top: 3rem;
+      }
+
+      .banner-heading,
+      .banner-quote {
+        max-width: 100%;
+        width: 500px;
+      }
+    }
+
+    &.homepage-banner-first {
+      .banner-info {
+        display: flex;
+        flex-direction: column;
+        margin-top: 2rem;
+
+        h2 {
+          text-transform: none;
+        }
+
+        .btn {
+          border-radius: 0 0 $border-radius $border-radius;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .homepage-section {
+    margin-top: 1.5rem;
+
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+  .homepage-tags-list {
+    display: flex;
+    flex-flow: row wrap;
+    margin: -.25rem;
+
+    .tag {
+      padding: 0.5rem 1rem;
+      font-size: 1.5rem;
+
+      .tag-rating {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        color: $blue-600;
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  .homepage-performers-list {
+    ul {
+      list-style: none;
+      margin: 2.75rem 0 0 $border-width;
+
+      li {
+        width: 25%;
+
+        > a {
+          border: $border-width solid $border-color;
+          margin-left: -$border-width;
+          padding: 0 1rem 1rem;
+          text-align: center;
+          transition: $transition-base;
+          background-color: $white;
+
+          @include hover {
+            box-shadow: $box-shadow-lg;
+            border-color: lighten($border-color, 50%);
+            text-decoration: none;
+          }
+
+          .account-logo-wrap {
+            width: 7.75rem;
+
+            .account-logo {
+              margin-top: -30%;
+            }
+
+            .account-logo-thumbnail {
+              width: 100%;
+            }
+          }
+
+          .account-name {
+            color: $black;
+
+            .name-heading {
+              margin-bottom: .5rem;
+            }
+          }
+        }
+      }
+
+      @include media-breakpoint-up(lg) {
+        li {
+          &:first-child {
+            > a {
+              @include border-radius(.75rem 0 0 .75rem);
+            }
+          }
+
+          &:last-child {
+            > a {
+              @include border-radius(0 .75rem .75rem 0);
+            }
+          }
+        }
+      }
+
+      @include media-breakpoint-down(lg) {
+        li {
+          margin-top: -$border-width;
+          width: 50%;
+
+          &:nth-child(1),
+          &:nth-child(2) {
+            > a {
+              padding-bottom: 3.5rem;
+            }
+          }
+
+          // Border radius
+          &:nth-child(1) {
+            > a {
+              @include border-radius(.75rem 0 0);
+            }
+          }
+
+          &:nth-child(2) {
+            > a {
+              @include border-radius(0 .75rem 0 0);
+            }
+          }
+
+          &:nth-child(3) {
+            > a {
+              @include border-radius(0 0 0 .75rem);
+            }
+          }
+
+          &:nth-child(4) {
+            > a {
+              @include border-radius(0 0 .75rem);
+            }
+          }
+        }
+      }
+
+      @include media-breakpoint-down(xs) {
+        li {
+          width: 100%;
+
+          > a {
+            padding-bottom: 3.5rem;
+            @include border-radius(0 !important);
+          }
+
+          &:first-child {
+            > a {
+              @include border-radius(.75rem .75rem 0 0);
+            }
+          }
+
+          &:last-child {
+            > a {
+              padding-bottom: 1rem;
+              @include border-radius(0 0 .75rem .75rem);
+            }
+          }
+        }
+      }
+    }
+
+    .tag {
+      font-size: 1rem;
+      padding: 0 .5rem;
+    }
+  }
+
+  .section-side-text {
+    p {
+      margin: 0;
+    }
+
+    &.flex-row-reverse {
+      > div:first-child {
+        border-left: 1px solid $red;
+      }
+    }
+
+    &:not(.flex-row-reverse) {
+      > div:first-child {
+        border-right: 1px solid $red;
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      > div {
+        border: none !important;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}

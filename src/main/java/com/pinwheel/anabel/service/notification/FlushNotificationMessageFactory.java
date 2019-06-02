@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -88,6 +89,32 @@ public class FlushNotificationMessageFactory extends NotificationMessageFactory 
                 .message("auth.register.activation.success")
                 .status(FlushStatus.SUCCESS)
                 .redirectAttributes(redirectAttributes)
+                .build();
+    }
+
+    /**
+     * Returns ready success activation flush message.
+     *
+     * @return ready success activation flush message.
+     */
+    public NotificationMessage createSectionAddSuccessfully(Model model) {
+        return FlushNotificationMessage.builder()
+                .message("section.add.message.success")
+                .status(FlushStatus.SUCCESS)
+                .model(model)
+                .build();
+    }
+
+    /**
+     * Returns ready success activation flush message.
+     *
+     * @return ready success activation flush message.
+     */
+    public NotificationMessage createSectionAddFailure(Model model) {
+        return FlushNotificationMessage.builder()
+                .message("section.add.message.fail")
+                .status(FlushStatus.DANGER)
+                .model(model)
                 .build();
     }
 }

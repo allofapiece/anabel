@@ -1,6 +1,6 @@
 CREATE TABLE `user_setting`
 (
-    `id`                       BIGINT NOT NULL,
+    `id`                       BIGINT NOT NULL AUTO_INCREMENT,
     `user_id`                  BIGINT,
     `allowed_setting_value_id` BIGINT,
     `setting_id`               BIGINT,
@@ -10,7 +10,7 @@ CREATE TABLE `user_setting`
 
 CREATE TABLE `allowed_setting_value`
 (
-    `id`         BIGINT NOT NULL,
+    `id`         BIGINT NOT NULL AUTO_INCREMENT,
     `setting_id` BIGINT,
     `caption`    VARCHAR(255),
     `value`      VARCHAR(255),
@@ -19,7 +19,7 @@ CREATE TABLE `allowed_setting_value`
 
 CREATE TABLE `city`
 (
-    `id`         BIGINT NOT NULL,
+    `id`         BIGINT NOT NULL AUTO_INCREMENT,
     `country_id` BIGINT,
     `name`       VARCHAR(255),
     PRIMARY KEY (`id`)
@@ -27,7 +27,7 @@ CREATE TABLE `city`
 
 CREATE TABLE `commitment`
 (
-    `id`          BIGINT    NOT NULL,
+    `id`          BIGINT    NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(255),
     `description` VARCHAR(255),
     `created_at`  TIMESTAMP NOT NULL NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -37,7 +37,7 @@ CREATE TABLE `commitment`
 
 CREATE TABLE `company`
 (
-    `id`         BIGINT    NOT NULL,
+    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
     `name`       VARCHAR(255),
     `status`     VARCHAR(255)            DEFAULT 'ACTIVE',
     `created_at` TIMESTAMP NOT NULL NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -47,14 +47,14 @@ CREATE TABLE `company`
 
 CREATE TABLE `country`
 (
-    `id`   BIGINT NOT NULL,
+    `id`   BIGINT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE `establishment`
 (
-    `id`           BIGINT NOT NULL,
+    `id`           BIGINT NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(255),
     `abbreviation` VARCHAR(255),
     `address`      VARCHAR(255),
@@ -63,7 +63,7 @@ CREATE TABLE `establishment`
 
 CREATE TABLE `faculty`
 (
-    `id`               BIGINT    NOT NULL,
+    `id`               BIGINT    NOT NULL AUTO_INCREMENT,
     `establishment_id` BIGINT,
     `name`             VARCHAR(255),
     `created_at`       TIMESTAMP NOT NULL NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -73,7 +73,7 @@ CREATE TABLE `faculty`
 
 CREATE TABLE `feedback`
 (
-    `id`        BIGINT NOT NULL,
+    `id`        BIGINT NOT NULL AUTO_INCREMENT,
     `author_id` BIGINT,
     `target_id` BIGINT,
     `text`      VARCHAR(255),
@@ -82,7 +82,7 @@ CREATE TABLE `feedback`
 
 CREATE TABLE `group`
 (
-    `id`            BIGINT    NOT NULL,
+    `id`            BIGINT    NOT NULL AUTO_INCREMENT,
     `speciality_id` BIGINT,
     `number`        VARCHAR(255),
     `created_at`    TIMESTAMP NOT NULL NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -92,7 +92,7 @@ CREATE TABLE `group`
 
 CREATE TABLE `image`
 (
-    `id`         BIGINT    NOT NULL,
+    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
     `path`       VARCHAR(255),
     `filename`   VARCHAR(255),
     `extension`  VARCHAR(255),
@@ -103,7 +103,7 @@ CREATE TABLE `image`
 
 CREATE TABLE `message`
 (
-    `id`          BIGINT    NOT NULL,
+    `id`          BIGINT    NOT NULL AUTO_INCREMENT,
     `author_id`   BIGINT,
     `receiver_id` BIGINT,
     `text`        VARCHAR(255),
@@ -116,7 +116,7 @@ CREATE TABLE `message`
 
 CREATE TABLE `notification`
 (
-    `id`         BIGINT    NOT NULL,
+    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
     `user_id`    BIGINT,
     `title`      VARCHAR(255),
     `message`    VARCHAR(255),
@@ -126,7 +126,7 @@ CREATE TABLE `notification`
 
 CREATE TABLE `order`
 (
-    `id`          BIGINT    NOT NULL,
+    `id`          BIGINT    NOT NULL AUTO_INCREMENT,
     `user_id`     BIGINT,
     `title`       VARCHAR(255),
     `description` VARCHAR(255),
@@ -140,7 +140,7 @@ CREATE TABLE `order`
 
 CREATE TABLE `order_comment`
 (
-    `id`         BIGINT    NOT NULL,
+    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
     `user_id`    BIGINT,
     `order_id`   BIGINT,
     `text`       VARCHAR(255),
@@ -151,7 +151,7 @@ CREATE TABLE `order_comment`
 
 CREATE TABLE `order_view`
 (
-    `id`         BIGINT    NOT NULL,
+    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
     `order_id`   BIGINT,
     `user_id`    BIGINT,
     `created_at` TIMESTAMP NOT NULL NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -160,7 +160,7 @@ CREATE TABLE `order_view`
 
 CREATE TABLE `rating`
 (
-    `id`        BIGINT NOT NULL,
+    `id`        BIGINT NOT NULL AUTO_INCREMENT,
     `author_id` BIGINT,
     `target_id` BIGINT,
     `value`     integer,
@@ -169,7 +169,7 @@ CREATE TABLE `rating`
 
 CREATE TABLE `section`
 (
-    `id`          BIGINT    NOT NULL,
+    `id`          BIGINT    NOT NULL AUTO_INCREMENT,
     `parent_id`   BIGINT,
     `name`        VARCHAR(255),
     `slug`        VARCHAR(255),
@@ -450,7 +450,7 @@ CREATE INDEX `idx-user_role-user_id` ON `user_role` (`user_id`);
 INSERT INTO `user` (`id`, `email`, `display_name`, `status`, `created_at`, `updated_at`)
 VALUES (1, 'anabel.pinwheel@gmail.com', 'Admin','ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO `password` (`id`, `user_id`, `value`, `status`, `created_at`)
-VALUES (1, 1, '$2a$08$zLyKXsL4y25aFV7ILYaP1ueqcoivjFEstv.1iHydiOPN8xSUGCpGC', 'ACTIVE', CURRENT_TIMESTAMP);
+VALUES (1, 1, '$2a$08$X5pFdPxOBbiqPiYoTmyn3O32y/6B/78fMwsBe1ilsQ3K3gzlL0S8e', 'ACTIVE', CURRENT_TIMESTAMP);
 
 INSERT INTO `user_role` (`user_id`, `roles`)
-VALUES (1, 'ADMIN,USER');
+VALUES (1, 'USER'), (1, 'ADMIN');

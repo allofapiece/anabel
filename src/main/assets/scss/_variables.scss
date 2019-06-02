@@ -10,12 +10,12 @@
 
 // stylelint-disable
 $white:    #fff;
-$gray-100: #f8f9fa;
-$gray-200: #e9ecef;
+$gray-100: #f9f9f9;
+$gray-200: #ececec;
 $gray-300: #dee2e6;
 $gray-400: #ced4da;
 $gray-500: #adb5bd;
-$gray-600: #6c757d;
+$gray-600: #909090;
 $gray-700: #495057;
 $gray-800: #343a40;
 $gray-900: #212529;
@@ -36,13 +36,13 @@ $grays: map-merge((
 
 $blue-100: #f4f8fb;
 $blue-200: #eef2fb;
-$blue-300: #e0eaf4;
+$blue-300: #E1ECF4;
 $blue-400: #cfe0f0;
 $blue-500: #bbd0eb;
-$blue-600: #a4c2e1;
-$blue-700: #84afda;
-$blue-800: #75a5d7;
-$blue-900: #5691d0;
+$blue-600: #4a8ab7;
+$blue-700: #3ba7f2;
+$blue-800: #2694f6;
+$blue-900: #2f3f4c;
 
 $blues: ();
 $blues: map-merge((
@@ -61,12 +61,12 @@ $blue:    #007bff;
 $indigo:  #6610f2;
 $purple:  #6f42c1;
 $pink:    #e83e8c;
-$red:     #dc3545;
+$red:     #e21a2d;
 $orange:  #fd7e14;
-$yellow:  #ffc107;
-$green:   #28a745;
+$yellow:  #ffe200;
+$green:   #3bca5c;
 $teal:    #20c997;
-$cyan:    #17a2b8;
+$cyan:    #2bb9d0;
 
 $colors: ();
 $colors: map-merge((
@@ -85,13 +85,13 @@ $colors: map-merge((
   "gray-dark":  $gray-800
 ), $colors);
 
-$primary:       $blue-900;
+$primary:       $blue-700;
 $secondary:     $gray-600;
 $success:       $green;
 $info:          $cyan;
 $warning:       $yellow;
 $danger:        $red;
-$light:         $gray-100;
+$light:         $gray-200;
 $dark:          $gray-800;
 
 $theme-colors: ();
@@ -124,7 +124,7 @@ $yiq-text-light: $white;
 
 $enable-caret:                                true;
 $enable-rounded:                              true;
-$enable-shadows:                              true1;
+$enable-shadows:                              true;
 $enable-gradients:                            false;
 $enable-transitions:                          true;
 $enable-prefers-reduced-motion-media-query:   true;
@@ -176,9 +176,9 @@ $body-color:                $gray-900;
 //
 // Style anchor elements.
 
-$link-color:                theme-color("primary");
+$link-color:                $blue-800;
 $link-decoration:           none;
-$link-hover-color:          darken($link-color, 15%);
+$link-hover-color:          $link-color;
 $link-hover-decoration:     underline;
 
 // Paragraphs
@@ -213,7 +213,7 @@ $container-max-widths: (
   sm: 540px,
   md: 720px,
   lg: 960px,
-  xl: 1140px
+  xl: 1320px
 );
 
 @include _assert-ascending($container-max-widths, "$container-max-widths");
@@ -265,6 +265,7 @@ $embed-responsive-aspect-ratios: ();
 
 // stylelint-disable value-keyword-case
 $font-family-sans-serif:      "OpenSans", "Exo", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-family-exo:             "Exo", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $font-family-base:            $font-family-sans-serif;
 // stylelint-enable value-keyword-case
@@ -296,15 +297,19 @@ $headings-font-weight:        500;
 $headings-line-height:        1.2;
 $headings-color:              inherit;
 
-$display1-size:               6rem;
-$display2-size:               5.5rem;
-$display3-size:               4.5rem;
-$display4-size:               3.5rem;
+$display1-size:               3.6875rem;
+$display2-size:               3.125rem;
+$display3-size:               2.5rem;
+$display4-size:               2.25rem;
+$display5-size:               1.5rem;
+$display6-size:               1.25rem;
 
-$display1-weight:             300;
-$display2-weight:             300;
-$display3-weight:             300;
-$display4-weight:             300;
+$display1-weight:             $font-weight-bold;
+$display2-weight:             $font-weight-light;
+$display3-weight:             $font-weight-light;
+$display4-weight:             $font-weight-bold;
+$display5-weight:             $font-weight-light;
+$display6-weight:             $font-weight-medium;
 $display-line-height:         $headings-line-height;
 
 $lead-font-size:              ($font-size-base * 1.25);
@@ -367,9 +372,9 @@ $input-btn-padding-y:         .375rem;
 $input-btn-padding-x:         .75rem;
 $input-btn-line-height:       $line-height-base;
 
-$input-btn-focus-width:       .2rem;
+$input-btn-focus-width:       0;
 $input-btn-focus-color:       rgba($component-active-bg, .25);
-$input-btn-focus-box-shadow:  0 0 0 $input-btn-focus-width $input-btn-focus-color;
+$input-btn-focus-box-shadow:  none;
 
 $input-btn-padding-y-sm:      .25rem;
 $input-btn-padding-x-sm:      .5rem;
@@ -401,7 +406,7 @@ $btn-line-height-lg:          $input-btn-line-height-lg;
 $btn-border-width:            $input-btn-border-width;
 
 $btn-font-weight:             $font-weight-normal;
-$btn-box-shadow:              inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075);
+$btn-box-shadow:              inset 0 1px 2px rgba($white, .25), -1px -1px 5px rgba($black, .3);
 $btn-focus-width:             $input-btn-focus-width;
 $btn-focus-box-shadow:        $input-btn-focus-box-shadow;
 $btn-disabled-opacity:        .65;
@@ -448,12 +453,12 @@ $input-border-color:                    $gray-400;
 $input-border-width:                    $input-btn-border-width;
 $input-box-shadow:                      inset 0 1px 1px rgba($black, .075);
 
-$input-border-radius:                   $border-radius;
+$input-border-radius:                   3px;
 $input-border-radius-lg:                $border-radius-lg;
 $input-border-radius-sm:                $border-radius-sm;
 
 $input-focus-bg:                        $input-bg;
-$input-focus-border-color:              lighten($component-active-bg, 25%);
+$input-focus-border-color:              rgba($component-active-bg, .75);
 $input-focus-color:                     $input-color;
 $input-focus-width:                     $input-btn-focus-width;
 $input-focus-box-shadow:                $input-btn-focus-box-shadow;
@@ -702,7 +707,7 @@ $navbar-toggler-padding-x:          .75rem;
 $navbar-toggler-font-size:          $font-size-lg;
 $navbar-toggler-border-radius:      $btn-border-radius;
 
-$navbar-dark-color:                 rgba($white, .5);
+$navbar-dark-color:                 $white;
 $navbar-dark-hover-color:           rgba($white, .75);
 $navbar-dark-active-color:          $white;
 $navbar-dark-disabled-color:        rgba($white, .25);

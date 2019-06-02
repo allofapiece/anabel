@@ -1,0 +1,236 @@
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  &:not(:first-child) {
+    margin-top: ($headings-margin-bottom * 2);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.display-4 {
+  font-weight: $display4-weight;
+}
+
+.display-5 {
+  font-size: $display5-size;
+  font-weight: $display5-weight;
+  line-height: $display-line-height;
+}
+
+.display-6 {
+  font-size: $display6-size;
+  font-weight: $display6-weight;
+  line-height: $display-line-height;
+}
+
+.display-1,
+.display-3,
+.display-4,
+.display-5,
+.display-6 {
+  text-transform: uppercase;
+}
+
+.display-2 {
+  text-transform: capitalize;
+}
+
+.display-1,
+.display-4 {
+  font-family: $font-family-exo;
+}
+
+@include media-breakpoint-down(sm) {
+  .display-1 {
+    font-size: $display1-size * .8;
+  }
+
+  .display-2 {
+    font-size: $display2-size * .8;
+  }
+
+  .display-3 {
+    font-size: $display3-size * .8;
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  .display-1 {
+    font-size: $display1-size * .64;
+  }
+
+  .display-2 {
+    font-size: $display2-size * .75;
+  }
+
+  .display-3 {
+    font-size: $display3-size * .666666667;
+  }
+}
+
+h4,
+.h4 {
+  text-transform: uppercase;
+}
+
+hr {
+  width: 100%;
+}
+
+h6,
+.h6 {
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}
+
+small,
+.small {
+  font-weight: inherit;
+}
+
+@each $color, $value in $theme-colors {
+  hr {
+    &.hr-#{$color} {
+      border-color: $value;
+    }
+  }
+}
+
+.hidden {
+  @extend .d-none;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.dots {
+  display: block;
+  text-align: center;
+
+  &,
+  li {
+    margin: 0;
+    font-size: 0;
+    line-height: 1;
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  .dot {
+    border: .375rem solid $gray-300;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 .4375rem .625rem;
+
+    &.active {
+      border-color: $primary;
+    }
+  }
+}
+
+.content {
+  a:not(.btn) {
+    font-weight: $font-weight-medium;
+  }
+
+  p + ul,
+  p + ol,
+  ul + ul,
+  ul + ol,
+  ol + ul,
+  ol + ol {
+    margin-top: -($paragraph-margin-bottom - .5rem);
+  }
+
+  ul,
+  ol,
+  li {
+    display: block;
+    list-style: none;
+    padding: 0;
+  }
+
+  ul,
+  ol {
+    counter-reset: list-counter;
+    padding-left: 1.25rem;
+
+    li {
+      margin: .5rem 0;
+      padding-left: 1.5em;
+
+      &:before {
+        color: theme-color('primary');
+        content: counter(list-counter) ".";
+        counter-increment: list-counter;
+        display: inline-block;
+        font-weight: $font-weight-medium;
+        margin-left: -1.5em;
+        overflow: hidden;
+        vertical-align: bottom;
+        width: 1.5em;
+      }
+    }
+
+    @each $color, $value in $theme-colors {
+      &.list-mark-#{$color} li:before {
+        color: $value;
+      }
+    }
+  }
+
+  ul {
+    li {
+      &:before {
+        content: "\0a00";
+        background-image: inline-svg('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#{theme-color('primary')}" d="M282.981 195.74l-42.899-38.59-133.993 120.551-63.189-56.844-42.9 38.59 106.074 95.403z"></path></svg>');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        text-indent: -100%;
+      }
+    }
+
+    @each $color, $value in $theme-colors {
+      &.list-mark-#{$color} li:before {
+        background-image: inline-svg('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#{$value}" d="M282.981 195.74l-42.899-38.59-133.993 120.551-63.189-56.844-42.9 38.59 106.074 95.403z"></path></svg>');
+      }
+    }
+  }
+
+  blockquote,
+  .blockquote {
+    @extend .blockquote;
+    background-color: gray('100');
+    border-left-width: .25em;
+    border-left-color: theme-color('primary');
+    border-left-style: solid;
+    padding: .75rem 1em;
+    padding-left: 1.5em - .25em;
+
+    address {
+      @extend .blockquote-footer;
+    }
+  }
+
+  pre,
+  .pre {
+    background-color: gray('100');
+    border: .0625em solid $border-color;
+    border-radius: $border-radius;
+    clear: both;
+    font-size: inherit;
+    overflow: auto;
+    padding: 1rem (1.5em - .0625em);
+    width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+}
