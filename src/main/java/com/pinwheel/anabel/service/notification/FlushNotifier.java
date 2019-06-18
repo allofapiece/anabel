@@ -1,7 +1,6 @@
 package com.pinwheel.anabel.service.notification;
 
 import com.pinwheel.anabel.entity.User;
-import com.sun.imageio.plugins.common.I18N;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -11,9 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.MessageFormat;
 import java.util.regex.Pattern;
 
 /**

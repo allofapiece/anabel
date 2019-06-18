@@ -1,0 +1,73 @@
+$loader-colors-map: (
+  $yellow: $white
+);
+
+a[role="button"],
+button,
+.btn {
+  position: relative;
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-sk-fading-circle {
+  $circleCount: 12;
+  $animationDuration: 1.2s;
+
+  width: 30px;
+  height: 30px;
+  position: relative;
+  margin: auto;
+
+  .sk-circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .sk-circle:before {
+    content: '';
+    display: block;
+    margin: 0 auto;
+    width: 15%;
+    height: 15%;
+    background-color: $white;
+    border-radius: 100%;
+    animation: sk-fading-circle-delay $animationDuration infinite ease-in-out both;
+  }
+
+  @for $i from 2 through $circleCount {
+    .sk-circle-#{$i} {
+      transform: rotate((360deg / $circleCount * ($i - 1)));
+    }
+  }
+
+  @for $i from 2 through $circleCount {
+    .sk-circle-#{$i}:before {
+      animation-delay: (-$animationDuration + $animationDuration / $circleCount * ($i - 1));
+    }
+  }
+
+}
+
+@keyframes sk-fading-circle-delay {
+  0%, 39%, 100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}

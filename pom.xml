@@ -54,6 +54,16 @@
             <artifactId>modelmapper</artifactId>
             <version>2.3.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.23.1-GA</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>3.2.7</version>
+        </dependency>
 
         <!-- Jackson -->
         <dependency>
@@ -160,7 +170,7 @@
     </dependencies>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.11</java.version>
         <project.resources>src/main/resources</project.resources>
         <flyway.configFiles>${project.resources}/db/config/flyway.conf,${project.resources}/db/config/flyway-local.conf</flyway.configFiles>
     </properties>
@@ -171,14 +181,21 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
             <!-- Aspectj compiler plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.11</version>
                 <configuration>
-                    <complianceLevel>1.8</complianceLevel>
+                    <complianceLevel>1.11</complianceLevel>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <showWeaveInfo>true</showWeaveInfo>
@@ -199,6 +216,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        --illegal-access=permit
+                    </argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -207,14 +229,19 @@
                 <configuration>
                     <groups>com.pinwheel.anabel.external.category.Integration</groups>
                     <groups>com.pinwheel.anabel.external.category.Unit</groups>
+                    <argLine>
+                        --illegal-access=permit
+                    </argLine>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <release>11</release>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>

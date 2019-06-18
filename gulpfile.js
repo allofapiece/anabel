@@ -125,6 +125,18 @@ gulp.task('build', ['clean'], function () {
     gulp.src(['node_modules/inputmask/dist/min/jquery.inputmask.bundle.min.js'])
         .pipe(gulp.dest(destDir + 'js'));
 
+    /**
+     * Validation plugin
+     */
+    gulp.src(['node_modules/jquery-validation/dist/jquery.validate.js'])
+        .pipe(uglify())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest(destDir + 'js/jquery-validation'));
+    gulp.src(['node_modules/jquery-validation/dist/localization/messages_*.min.js'])
+        .pipe(gulp.dest(destDir + 'js/jquery-validation/localization'));
+
+
+
     gulp.start('sass');
     gulp.start('css');
     gulp.start('img');

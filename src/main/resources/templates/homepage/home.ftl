@@ -23,7 +23,33 @@
 
                                         </blockquote>
                                         <hr class="hr-warning mt-auto">
-                                        <a href="javascript:;" role="button" class="btn btn-warning btn-lg btn-block"><@s.message "homepage.banner.first.client.button"/></a>
+                                        <a href="javascript:;" role="button" class="btn btn-warning btn-lg btn-block">
+                                            <@s.message "homepage.banner.first.client.button"/>
+                                            <div class="loader">
+                                                <div class="loader-sk-fading-circle">
+                                                    <div class="sk-circle sk-circle-1"></div>
+                                                    <div class="sk-circle sk-circle-2"></div>
+                                                    <div class="sk-circle sk-circle-3"></div>
+                                                    <div class="sk-circle sk-circle-4"></div>
+                                                    <div class="sk-circle sk-circle-5"></div>
+                                                    <div class="sk-circle sk-circle-6"></div>
+                                                    <div class="sk-circle sk-circle-7"></div>
+                                                    <div class="sk-circle sk-circle-8"></div>
+                                                    <div class="sk-circle sk-circle-9"></div>
+                                                    <div class="sk-circle sk-circle-10"></div>
+                                                    <div class="sk-circle sk-circle-11"></div>
+                                                    <div class="sk-circle sk-circle-12"></div>
+                                                </div>
+                                            </div>
+                                            <#--<div class="loader-ring">
+                                                <div class="loader-ring-inner">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </div>-->
+                                        </a>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-4 banner-info">
                                         <h2 class="display-4"><@s.message "homepage.banner.first.performer.heading"/></h2>

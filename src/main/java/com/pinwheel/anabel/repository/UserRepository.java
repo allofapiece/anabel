@@ -1,7 +1,10 @@
 package com.pinwheel.anabel.repository;
 
 import com.pinwheel.anabel.entity.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.awt.print.Pageable;
 
 /**
  * User Repository.

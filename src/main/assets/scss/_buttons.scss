@@ -2,4 +2,13 @@
   .btn-transparent-#{$color} {
     @include button-transparent-variant(rgba($value, 0.1));
   }
+
+  .btn-#{$color} {
+    &.disabled,
+    &:disabled {
+      background-color: darken($value, 10%);
+      border-color: darken($value, 10%);
+      color: darken(color-yiq($value), 10%);
+    }
+  }
 }

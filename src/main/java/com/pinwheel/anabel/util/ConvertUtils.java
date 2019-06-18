@@ -1,5 +1,6 @@
 package com.pinwheel.anabel.util;
 
+import com.pinwheel.anabel.entity.SiteSettingType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -30,5 +31,18 @@ public class ConvertUtils {
         );
 
         return bindingResult.getFieldErrors().stream().collect(collector);
+    }
+
+    public static Map<String, String> enumOptions(Class clazz) throws NoSuchFieldException, NoSuchMethodException {
+        if (!clazz.isEnum()) {
+            return null;
+        }
+/*
+        if (clazz.getDeclaredMethod("values") != null) {
+            for (Enum e : en.values()) {
+
+            }
+        }*/
+return null;
     }
 }

@@ -4,4 +4,6 @@
 <script src="/static/assets/js/jquery.cookie.min.js?v=1551878494"></script>
 <script src="/static/assets/js/jquery.form.min.js?v=1551878494"></script>
 <script src="/static/assets/js/scripts.min.js?v=1551878539"></script>
+<script src="/static/assets/js/jquery-validation/jquery.validate.min.js"></script>
+<script src="/static/assets/js/jquery-validation/localization/messages_${.locale}.min.js"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
