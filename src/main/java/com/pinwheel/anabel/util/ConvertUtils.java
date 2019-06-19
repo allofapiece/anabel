@@ -1,11 +1,11 @@
 package com.pinwheel.anabel.util;
 
-import com.pinwheel.anabel.entity.SiteSettingType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import java.util.HashMap;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -33,16 +33,50 @@ public class ConvertUtils {
         return bindingResult.getFieldErrors().stream().collect(collector);
     }
 
-    public static Map<String, String> enumOptions(Class clazz) throws NoSuchFieldException, NoSuchMethodException {
+    /**
+     * Converts enum to {@link Map} for displaying it in select html tags.
+     * <p>
+     * Key of the map will be result of invoking
+     * {@code getOption} method of passed enum. If this method does not exist {@code toString} method will be invoked
+     * instead.
+     * <p>
+     * Value of the map will be enum instance.
+     *
+     * @param clazz class of enum. If clazz does not enum null will be returned.
+     * @return map of converted enum.
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public static Map<String, Object> enumOptions(Class clazz) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (!clazz.isEnum()) {
             return null;
         }
-/*
-        if (clazz.getDeclaredMethod("values") != null) {
-            for (Enum e : en.values()) {
 
-            }
-        }*/
-return null;
+        Method valuesMethod = clazz.getDeclaredMethod("values");
+
+        if (valuesMethod == null) {
+            return null;
+        }
+
+        Object[] values = (Object[]) valuesMethod.invoke(null);
+
+        Collector<Object, ?, Map<String, Object>> collector = Collectors.toMap(
+                val -> {
+                    try {
+                        Method getOptionMethod = val.getClass().getDeclaredMethod("getOption");
+
+                        if (getOptionMethod != null) {
+                            return (String) getOptionMethod.invoke(val);
+                        }
+                    } catch (ReflectiveOperationException e) {
+                    }
+
+                    return val.toString();
+                },
+                val -> val
+        );
+
+        return Arrays.stream(values).collect(collector);
     }
 }

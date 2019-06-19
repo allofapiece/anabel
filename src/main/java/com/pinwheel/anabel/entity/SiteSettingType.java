@@ -22,9 +22,9 @@ public enum SiteSettingType {
 
     STRING("String");
 
-    private String name;
+    private String option;
 
-    SiteSettingType(String name) {
-        this.name = name;
+    SiteSettingType(String option) {
+        this.option = option;
     }
 }
