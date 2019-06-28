@@ -1,9 +1,9 @@
 package com.pinwheel.anabel.config;
 
-import com.pinwheel.anabel.service.notification.EmailNotifier;
-import com.pinwheel.anabel.service.notification.FlushNotifier;
 import com.pinwheel.anabel.service.notification.NotifiersHolder;
-import com.pinwheel.anabel.service.notification.WebNotifier;
+import com.pinwheel.anabel.service.notification.notifier.EmailNotifier;
+import com.pinwheel.anabel.service.notification.notifier.FlushNotifier;
+import com.pinwheel.anabel.service.notification.notifier.WebNotifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

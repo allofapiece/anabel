@@ -1,9 +1,15 @@
 package com.pinwheel.anabel.service.notification;
 
 import com.pinwheel.anabel.entity.User;
+import com.pinwheel.anabel.service.mail.SimpleMailSender;
+import com.pinwheel.anabel.service.notification.domain.Notification;
+import com.pinwheel.anabel.service.notification.domain.NotificationMessage;
+import com.pinwheel.anabel.service.notification.notifier.Notifier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +28,11 @@ import java.util.stream.Stream;
 @Setter
 @Service
 public class SimpleNotificationService implements NotificationService {
+    /**
+     * Logger.
+     */
+    private Logger logger = LoggerFactory.getLogger(SimpleMailSender.class);
+
     /**
      * Injection of {@link NotifierResolver} bean.
      */
@@ -45,6 +56,40 @@ public class SimpleNotificationService implements NotificationService {
     public boolean send(String notifierName, Map<User, NotificationMessage> map, List<Predicate<User>> conditions) {
         Notifier notifier = notifierResolver.resolve(notifierName);
 
+        return toStream(map, conditions)
+                .allMatch((entry) -> notifier.send(entry.getKey(), entry.getValue()));
+    }
+
+    @Override
+    public void sendAsync(Notification notification) {
+        notification.getMap().forEach((key, value) -> sendAsync(key, value, notification.getConditions()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void sendAsync(String notifierName, Map<User, NotificationMessage> map, List<Predicate<User>> conditions) {
+        Notifier notifier = notifierResolver.resolve(notifierName);
+        toStream(map, conditions).forEach((entry) -> notifier
+                .sendAsync(entry.getKey(), entry.getValue())
+                .exceptionally(e -> {
+                    logger.error("Message has not been sent.", e);
+                    return null;
+                })
+        );
+    }
+
+    /**
+     * Makes stream from map of notification messages filtered by {@code conditions}.
+     *
+     * @param map        map of users and theirs notifications.
+     * @param conditions conditions for filtering messages.
+     * @return result stream.
+     */
+    protected Stream<Map.Entry<User, NotificationMessage>> toStream(
+            Map<User, NotificationMessage> map,
+            List<Predicate<User>> conditions
+    ) {
         Stream<Map.Entry<User, NotificationMessage>> stream = map
                 .entrySet()
                 .stream();
@@ -53,6 +98,6 @@ public class SimpleNotificationService implements NotificationService {
             stream = stream.filter(entry -> condition.test(entry.getKey()));
         }
 
-        return stream.allMatch((entry) -> notifier.send(entry.getKey(), entry.getValue()));
+        return stream;
     }
 }

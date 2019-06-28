@@ -1,6 +1,8 @@
-package com.pinwheel.anabel.service.notification;
+package com.pinwheel.anabel.service.notification.factory;
 
 import com.pinwheel.anabel.entity.User;
+import com.pinwheel.anabel.service.notification.domain.EmailNotificationMessage;
+import com.pinwheel.anabel.service.notification.domain.NotificationMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

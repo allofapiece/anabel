@@ -4,6 +4,10 @@ package com.pinwheel.anabel.service.notification;
 import com.pinwheel.anabel.entity.Status;
 import com.pinwheel.anabel.entity.User;
 import com.pinwheel.anabel.external.category.Unit;
+import com.pinwheel.anabel.service.notification.domain.*;
+import com.pinwheel.anabel.service.notification.notifier.EmailNotifier;
+import com.pinwheel.anabel.service.notification.notifier.FlushNotifier;
+import com.pinwheel.anabel.service.notification.notifier.WebNotifier;
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -162,6 +166,35 @@ public class NotificationServiceUnitTest {
                 .condition(condition2)
                 .build()));
 
+        Mockito.verify(emailNotifier, Mockito.times(1)).send(eq(user), eq(emailMessage));
+        Mockito.verify(webNotifier, Mockito.times(1)).send(eq(user), eq(webMessage));
+        Mockito.verify(flushNotifier, Mockito.times(1)).send(eq(user), any(NotificationMessage.class));
+    }
+
+    @Test
+    public void shouldSendMessagesAsynchronously() {
+        User user = new User();
+        user.setId(1L);
+
+        EmailNotificationMessage emailMessage = new EmailNotificationMessage();
+        WebNotificationMessage webMessage = new WebNotificationMessage();
+        FlushNotificationMessage flushMessage = new FlushNotificationMessage();
+
+        Mockito.doReturn(true).when(emailNotifier).send(any(User.class), any(EmailNotificationMessage.class));
+        Mockito.doReturn(true).when(webNotifier).send(any(User.class), any(WebNotificationMessage.class));
+        Mockito.doReturn(true).when(flushNotifier).send(any(User.class), any(NotificationMessage.class));
+
+        Mockito.doReturn(emailNotifier).when(notifierResolver).resolve("email");
+        Mockito.doReturn(webNotifier).when(notifierResolver).resolve("web");
+        Mockito.doReturn(flushNotifier).when(notifierResolver).resolve("flush");
+
+        notificationService.sendAsync(Notification.builder()
+                .put("email", user, emailMessage)
+                .put("web", user, webMessage)
+                .put("flush", user, flushMessage)
+                .build());
+
+        Mockito.verify(notifierResolver, Mockito.times(1)).resolve("email");
         Mockito.verify(emailNotifier, Mockito.times(1)).send(eq(user), eq(emailMessage));
         Mockito.verify(webNotifier, Mockito.times(1)).send(eq(user), eq(webMessage));
         Mockito.verify(flushNotifier, Mockito.times(1)).send(eq(user), any(NotificationMessage.class));

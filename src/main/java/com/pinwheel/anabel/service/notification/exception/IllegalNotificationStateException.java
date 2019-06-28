@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.service.notification;
+package com.pinwheel.anabel.service.notification.exception;
 
 import lombok.NoArgsConstructor;
 

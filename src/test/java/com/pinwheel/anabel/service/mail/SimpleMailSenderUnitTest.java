@@ -51,8 +51,7 @@ class SimpleMailSenderUnitTest {
                 "test.ftl",
                 map,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                StandardCharsets.UTF_8
-        ).get());
+                StandardCharsets.UTF_8));
 
         MimeMessage[] receivedMessages = smtpServer.getMessages();
         assertEquals(1, receivedMessages.length);
@@ -76,7 +75,7 @@ class SimpleMailSenderUnitTest {
         String to = "testemail@email.com";
         String message = "Payload";
 
-        assertTrue(mailSender.send(to, subject, message).get());
+        assertTrue(mailSender.send(to, subject, message));
 
         MimeMessage[] receivedMessages = smtpServer.getMessages();
         assertEquals(1, receivedMessages.length);

@@ -1,5 +1,7 @@
 package com.pinwheel.anabel.service.notification;
 
+import com.pinwheel.anabel.service.notification.domain.EmailNotificationMessage;
+
 /**
  * Notification mail sender interface. Describes behavior of sending {@link EmailNotificationMessage email notification
  * messages}.

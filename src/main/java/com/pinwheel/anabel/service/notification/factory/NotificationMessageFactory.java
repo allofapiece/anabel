@@ -1,5 +1,7 @@
-package com.pinwheel.anabel.service.notification;
+package com.pinwheel.anabel.service.notification.factory;
 
+import com.pinwheel.anabel.service.notification.domain.NotificationMessage;
+import com.pinwheel.anabel.service.notification.exception.IllegalNotificationStateException;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;

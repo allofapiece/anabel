@@ -1,5 +1,8 @@
-package com.pinwheel.anabel.service.notification;
+package com.pinwheel.anabel.service.notification.factory;
 
+import com.pinwheel.anabel.service.notification.domain.FlushNotificationMessage;
+import com.pinwheel.anabel.service.notification.domain.FlushStatus;
+import com.pinwheel.anabel.service.notification.domain.NotificationMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;

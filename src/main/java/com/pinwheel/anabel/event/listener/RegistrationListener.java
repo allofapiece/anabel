@@ -3,12 +3,11 @@ package com.pinwheel.anabel.event.listener;
 import com.pinwheel.anabel.entity.User;
 import com.pinwheel.anabel.event.OnRegistrationCompleteEvent;
 import com.pinwheel.anabel.service.VerificationTokenService;
-import com.pinwheel.anabel.service.notification.EmailNotificationMessageFactory;
-import com.pinwheel.anabel.service.notification.Notification;
 import com.pinwheel.anabel.service.notification.NotificationService;
+import com.pinwheel.anabel.service.notification.domain.Notification;
+import com.pinwheel.anabel.service.notification.factory.EmailNotificationMessageFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationListener;
-import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -52,12 +51,8 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         verificationTokenService.create(user);
 
-        boolean isSent = notificationService.send(Notification.builder()
+        notificationService.sendAsync(Notification.builder()
                 .put("email", user, factory.create("signup", user))
                 .build());
-
-        if (!isSent) {
-            throw new MailSendException("An error occurred while sending email");
-        }
     }
 }

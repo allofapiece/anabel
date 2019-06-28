@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.service.notification;
+package com.pinwheel.anabel.service.notification.domain;
 
 /**
  * Describes <a href="https://getbootstrap.com/docs/4.0/components/alerts/">bootstrap alerts</a>.
