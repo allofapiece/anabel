@@ -1,6 +1,8 @@
-package com.pinwheel.anabel.service.notification;
+package com.pinwheel.anabel.service.notification.domain;
 
 import com.pinwheel.anabel.entity.User;
+import com.pinwheel.anabel.service.notification.NotificationService;
+import com.pinwheel.anabel.service.notification.notifier.Notifier;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

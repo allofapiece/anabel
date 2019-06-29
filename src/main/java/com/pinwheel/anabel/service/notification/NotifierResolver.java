@@ -1,5 +1,7 @@
 package com.pinwheel.anabel.service.notification;
 
+import com.pinwheel.anabel.service.notification.notifier.Notifier;
+
 /**
  * Notifier resolver interface. Describes behavior of resolving target {@link Notifier notifier} by passed notifier
  * name.

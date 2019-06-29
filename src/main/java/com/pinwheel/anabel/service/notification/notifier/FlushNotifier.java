@@ -1,7 +1,8 @@
-package com.pinwheel.anabel.service.notification;
+package com.pinwheel.anabel.service.notification.notifier;
 
 import com.pinwheel.anabel.entity.User;
-import com.sun.imageio.plugins.common.I18N;
+import com.pinwheel.anabel.service.notification.domain.FlushNotificationMessage;
+import com.pinwheel.anabel.service.notification.domain.NotificationMessage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -11,9 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.MessageFormat;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 /**
@@ -44,6 +44,14 @@ public class FlushNotifier implements Notifier {
     @Override
     public boolean send(User user, NotificationMessage message) {
         return send(user, (FlushNotificationMessage) message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableFuture<Boolean> sendAsync(User user, NotificationMessage message) {
+        return CompletableFuture.completedFuture(this.send(user, message));
     }
 
     /**
@@ -115,7 +123,7 @@ public class FlushNotifier implements Notifier {
      *
      * @return current user object.
      */
-    protected User currentUser() {
+    public User currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {

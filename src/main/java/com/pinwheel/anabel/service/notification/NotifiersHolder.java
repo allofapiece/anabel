@@ -1,5 +1,6 @@
 package com.pinwheel.anabel.service.notification;
 
+import com.pinwheel.anabel.service.notification.notifier.Notifier;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
