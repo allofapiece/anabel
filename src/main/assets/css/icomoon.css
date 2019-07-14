@@ -24,6 +24,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-pencil:before {
+  content: "\e902";
+}
+.icon-trash:before {
+  content: "\e903";
+}
 .icon-bolt:before {
   content: "\e901";
 }

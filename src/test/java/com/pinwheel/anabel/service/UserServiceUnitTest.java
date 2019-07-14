@@ -132,12 +132,12 @@ public class UserServiceUnitTest {
 
         Mockito.doReturn(user).when(userRepository).save(eq(user));
         Mockito.doReturn(new VerificationToken()).when(verificationTokenService).create(eq(user), any(String.class));
-        Mockito.doReturn(true).when(notificationService).send(any(Notification.class));
+        Mockito.doNothing().when(notificationService).sendAsync(any(Notification.class));
 
         user.addVerificationToken(new VerificationToken("validToken"));
         assertNotNull(userService.createUser(user));
 
-        Mockito.verify(notificationService, Mockito.times(1)).send(any(Notification.class));
+        Mockito.verify(notificationService, Mockito.times(1)).sendAsync(any(Notification.class));
     }
 
     @Test

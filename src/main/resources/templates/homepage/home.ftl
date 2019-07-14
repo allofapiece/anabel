@@ -20,7 +20,6 @@
                                         <h2 class="display-4"><@s.message "homepage.banner.first.client.heading"/></h2>
                                         <blockquote class="banner-quote">
                                             <@s.message "homepage.banner.first.client.text"/> <a href="#"><@s.message "homepage.banner.first.client.text2"/></a>.
-
                                         </blockquote>
                                         <hr class="hr-warning mt-auto">
                                         <a href="javascript:;" role="button" class="btn btn-warning btn-lg btn-block"><@s.message "homepage.banner.first.client.button"/></a>
@@ -28,7 +27,7 @@
                                     <div class="col-12 col-md-6 col-lg-4 banner-info">
                                         <h2 class="display-4"><@s.message "homepage.banner.first.performer.heading"/></h2>
                                         <blockquote class="banner-quote"><@s.message "homepage.banner.first.performer.text"/></blockquote>
-                                        <hr class="hr-danger mt-auto">
+                                        <hr class="hr-danger mt-auto"/>
                                         <a href="javascript:;" role="button" class="btn btn-danger btn-lg btn-block"><@s.message "homepage.banner.first.performer.button"/></a>
                                     </div>
                                 </div>
@@ -59,7 +58,7 @@
                         <a href="#" class="float-right mt-2"><@s.message "homepage.section.first.link.technology"/></a>
                     </div>
                 </div>
-                <hr>
+                <hr/>
                 <div class="row mt-3 flex-row-reverse section-side-text">
                     <div class="col-12 col-lg-5">
                         <h3><@s.message "homepage.section.first.establishments.heading"/></h3>

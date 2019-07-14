@@ -8,21 +8,21 @@
                     <div class="footer-sections d-md-flex">
                         <div class="footer-section col-sm-12 col-md-4">
                             <h6><@s.message "general.site.name"/></h6>
-                            <hr class="mb-4 mt-0">
+                            <hr class="mb-4 mt-0"/>
                             <p><@s.message "footer.link.write.us.0"/>, <a
                                         href="#"><@s.message "footer.link.write.us.1"/></a>.
                                 <@s.message "footer.link.write.us.2"/>!</p>
                         </div>
                         <div class="footer-section col-sm-12 col-md-3">
                             <h6><@s.message "footer.link.header.contacts"/></h6>
-                            <hr class="mb-4 mt-0">
+                            <hr class="mb-4 mt-0"/>
                             <p><a href="#"><@s.message "footer.link.report-bug"/></a></p>
                             <p><a href="#"><@s.message "footer.link.advertise"/></a></p>
                             <p><a href="#"><@s.message "footer.link.violation.rights"/></a></p>
                         </div>
                         <div class="footer-section col-sm-12 col-md-3">
                             <h6><@s.message "footer.link.header.to-read"/></h6>
-                            <hr class="mb-4 mt-0">
+                            <hr class="mb-4 mt-0"/>
                             <p><a href="#"><@s.message "footer.link.about.project"/></a></p>
                             <p><a href="#"><@s.message "footer.link.about.company"/></a></p>
                             <p><a href="#"><@s.message "footer.link.terms-of-user"/></a></p>
@@ -30,12 +30,12 @@
                         </div>
                         <div class="footer-section langs col-sm-12 col-md-2">
                             <h6><@s.message "general.languages"/></h6>
-                            <hr class="mb-4 mt-0">
-                            <p><a class="lang" data-lang="en" href=""><@s.message "general.languages.en"/></a></p>
-                            <p><a class="lang" data-lang="ru" href=""><@s.message "general.languages.ru"/></a></p>
+                            <hr class="mb-4 mt-0"/>
+                            <p><a class="lang" data-lang="en" href="javascript:void;"><@s.message "general.languages.en"/></a></p>
+                            <p><a class="lang" data-lang="ru" href="javascript:void;"><@s.message "general.languages.ru"/></a></p>
                         </div>
                     </div>
-                    <hr>
+                    <hr/>
                     <div class="col-sm-12 col-md-6 ml-lg-0">
                         <div class="social-networks text-md-left">
                             <ul class="list-inline">

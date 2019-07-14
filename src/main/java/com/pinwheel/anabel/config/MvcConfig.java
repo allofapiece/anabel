@@ -1,5 +1,6 @@
 package com.pinwheel.anabel.config;
 
+import com.pinwheel.anabel.service.interceptor.FreeMarkerInterceptor;
 import com.pinwheel.anabel.service.interceptor.SecurityInterceptor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
@@ -50,7 +51,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:i18n/messages", "classpath:i18n/validation");
+        messageSource.setBasenames("classpath:i18n/messages", "classpath:i18n/forms", "classpath:i18n/general");
         messageSource.setUseCodeAsDefaultMessage(true);
         messageSource.setDefaultEncoding("UTF-8");
 
@@ -81,6 +82,9 @@ public class MvcConfig implements WebMvcConfigurer {
 
         final SecurityInterceptor securityInterceptor = new SecurityInterceptor();
         registry.addInterceptor(securityInterceptor);
+
+        final FreeMarkerInterceptor freeMarkerInterceptor = new FreeMarkerInterceptor();
+        registry.addInterceptor(freeMarkerInterceptor);
     }
 
     /**

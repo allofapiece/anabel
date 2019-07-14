@@ -158,6 +158,16 @@ CREATE TABLE `order_view`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE `password`
+(
+    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
+    `user_id`    BIGINT,
+    `value`      VARCHAR(255),
+    `status`     VARCHAR(50)        DEFAULT 'ACTIVE',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
 CREATE TABLE `rating`
 (
     `id`        BIGINT NOT NULL AUTO_INCREMENT,
@@ -197,6 +207,18 @@ CREATE TABLE `setting_section`
 (
     `id`   BIGINT NOT NULL,
     `name` VARCHAR(255),
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `site_setting`
+(
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT,
+    `key`        VARCHAR(255) UNIQUE,
+    `value`      TEXT,
+    `type`       VARCHAR(50) NOT NULL DEFAULT 'STRING',
+    `status`     VARCHAR(50) NOT NULL DEFAULT 'ACTIVE',
+    `created_at` TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -262,16 +284,6 @@ CREATE TABLE `user`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `password`
-(
-    `id`         BIGINT    NOT NULL AUTO_INCREMENT,
-    `user_id`    BIGINT,
-    `value`      VARCHAR(255),
-    `status`     VARCHAR(50)        DEFAULT 'ACTIVE',
-    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
-
 CREATE TABLE `verification_token`
 (
     `id`      BIGINT NOT NULL AUTO_INCREMENT,
@@ -331,7 +343,7 @@ CREATE TABLE `user_role`
 ALTER TABLE `user`
     ADD CONSTRAINT `fk-user-image_id` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`);
 ALTER TABLE `password`
-    ADD CONSTRAINT `fk-password-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+    ADD CONSTRAINT `fk-password-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `verification_token`
     ADD CONSTRAINT `fk-verification_token-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `user_setting`
@@ -436,6 +448,7 @@ CREATE INDEX `idx-order_view-order_id` ON `order_view` (`order_id`);
 CREATE INDEX `idx-rating-target_id` ON `rating` (`target_id`);
 CREATE INDEX `idx-section-parent_id` ON `section` (`parent_id`);
 CREATE INDEX `idx-section-name` ON `section` (`name`);
+CREATE INDEX `idx-site_setting-key` ON `site_setting` (`key`);
 CREATE INDEX `idx-speciality-faculty_id` ON `speciality` (`faculty_id`);
 CREATE INDEX `idx-speciality-name` ON `speciality` (`name`);
 CREATE INDEX `idx-tag-name` ON `tag` (`name`);
@@ -448,9 +461,10 @@ CREATE INDEX `idx-user-confirmation_code` ON `user` (`confirmation_code`);
 CREATE INDEX `idx-user_role-user_id` ON `user_role` (`user_id`);
 
 INSERT INTO `user` (`id`, `email`, `display_name`, `status`, `created_at`, `updated_at`)
-VALUES (1, 'anabel.pinwheel@gmail.com', 'Admin','ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+VALUES (1, 'anabel.pinwheel@gmail.com', 'Admin', 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO `password` (`id`, `user_id`, `value`, `status`, `created_at`)
 VALUES (1, 1, '$2a$08$X5pFdPxOBbiqPiYoTmyn3O32y/6B/78fMwsBe1ilsQ3K3gzlL0S8e', 'ACTIVE', CURRENT_TIMESTAMP);
 
 INSERT INTO `user_role` (`user_id`, `roles`)
-VALUES (1, 'USER'), (1, 'ADMIN');
+VALUES (1, 'USER'),
+       (1, 'ADMIN');

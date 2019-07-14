@@ -1,0 +1,130 @@
+package com.pinwheel.anabel.service;
+
+import com.pinwheel.anabel.entity.SiteSetting;
+import com.pinwheel.anabel.entity.SiteSettingType;
+import com.pinwheel.anabel.external.category.Unit;
+import com.pinwheel.anabel.repository.SiteSettingRepository;
+import com.pinwheel.anabel.service.converter.ConverterNotFoundException;
+import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@TestPropertySource(locations = {
+        "/application-test.properties",
+        "/application-test-local.properties"
+})
+@Category(Unit.class)
+public class CachableSiteSettingServiceUnitTest {
+
+    @Autowired
+    private SiteSettingService siteSettingService;
+
+    @MockBean
+    private SiteSettingRepository siteSettingRepository;
+
+    @BeforeEach
+    public void init() {
+        siteSettingService.clearCache();
+    }
+
+    @Test
+    public void shouldGetValidValueByKeyAndShouldSaveValueInCache() {
+        String key = "testKey";
+
+        Mockito.doReturn(SiteSetting.builder()
+                .key(key)
+                .value("testValue")
+                .type(SiteSettingType.STRING)
+                .build()).when(siteSettingRepository).findByKey(key);
+
+        assertEquals(siteSettingService.findByKey(key).getValue(), "testValue");
+        assertEquals(siteSettingService.getValue(key, false), "testValue");
+        assertEquals(siteSettingService.getValue(key, true), "testValue");
+
+        Mockito.verify(siteSettingRepository, Mockito.times(2)).findByKey(key);
+    }
+
+    @Test
+    public void shouldResolveConverterAndConvert() {
+        SiteSetting stringSetting = SiteSetting.builder()
+                .key("stringKey")
+                .value("stringValue")
+                .type(SiteSettingType.STRING)
+                .build();
+
+        SiteSetting booleanSetting = SiteSetting.builder()
+                .key("booleanKey")
+                .value("true")
+                .type(SiteSettingType.BOOLEAN)
+                .build();
+
+        SiteSetting arrayListSetting = SiteSetting.builder()
+                .key("arrayListKey")
+                .value("array list value")
+                .type(SiteSettingType.ARRAY_LIST)
+                .build();
+
+        Mockito.doReturn(stringSetting).when(siteSettingRepository).findByKey("stringKey");
+        Mockito.doReturn(booleanSetting).when(siteSettingRepository).findByKey("booleanKey");
+        Mockito.doReturn(arrayListSetting).when(siteSettingRepository).findByKey("arrayListKey");
+
+        assertEquals(siteSettingService.getValue("stringKey"), "stringValue");
+        assertEquals(siteSettingService.getValue("booleanKey"), true);
+        assertEquals(siteSettingService.getValue("arrayListKey"), new ArrayList<>(Arrays.asList("array", "list", "value")));
+    }
+
+    @Test
+    public void shouldClearCacheAfterSaving() {
+        String booleanKey = "booleanKey";
+
+        SiteSetting stringSetting = SiteSetting.builder()
+                .key("stringKey")
+                .value("stringValue")
+                .type(SiteSettingType.STRING)
+                .build();
+
+        SiteSetting booleanSetting = SiteSetting.builder()
+                .key(booleanKey)
+                .value("true")
+                .type(SiteSettingType.BOOLEAN)
+                .build();
+
+        Mockito.doReturn(stringSetting).when(siteSettingRepository).save(stringSetting);
+        Mockito.doReturn(booleanSetting).when(siteSettingRepository).findByKey(booleanKey);
+
+        siteSettingService.getValue(booleanKey);
+
+        siteSettingService.save(stringSetting);
+
+        siteSettingService.getValue(booleanKey);
+
+        Mockito.verify(siteSettingRepository, Mockito.times(2)).findByKey(booleanKey);
+    }
+
+    @Test
+    public void shouldThrowExceptionForNonExistentKey() {
+        RuntimeException ex = assertThrows(
+                RuntimeException.class,
+                () -> siteSettingService.getValue("nonexistent")
+        );
+        assertEquals("Setting cannot be found by passed key.", ex.getMessage());
+    }
+}

@@ -22,7 +22,7 @@
                         href="/signup"><@spring.message "form.user.sign-up.label"/>.</a></p>
             <button type="submit"
                     class="btn btn-primary float-right"><@spring.message "form.user.sign-in.label"/></button>
-            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
     </div>
 </@n.page>

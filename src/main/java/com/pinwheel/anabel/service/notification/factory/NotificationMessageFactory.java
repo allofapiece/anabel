@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -68,8 +67,6 @@ public abstract class NotificationMessageFactory {
      *
      * @param name name of notification method.
      * @return Ready-made notification message.
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
      */
     public NotificationMessage create(String name, boolean useCache, Object... args) {
         name = name.toLowerCase();
