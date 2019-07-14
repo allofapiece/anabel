@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.ExtendedModelMap;
@@ -22,6 +23,7 @@ import org.springframework.ui.ExtendedModelMap;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,6 +32,7 @@ import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@ActiveProfiles("non-async")
 @TestPropertySource(locations = {
         "/application-test.properties",
         "/application-test-local.properties"
@@ -180,9 +183,9 @@ public class NotificationServiceUnitTest {
         WebNotificationMessage webMessage = new WebNotificationMessage();
         FlushNotificationMessage flushMessage = new FlushNotificationMessage();
 
-        Mockito.doReturn(true).when(emailNotifier).send(any(User.class), any(EmailNotificationMessage.class));
-        Mockito.doReturn(true).when(webNotifier).send(any(User.class), any(WebNotificationMessage.class));
-        Mockito.doReturn(true).when(flushNotifier).send(any(User.class), any(NotificationMessage.class));
+        Mockito.doReturn(CompletableFuture.completedFuture(true)).when(emailNotifier).sendAsync(any(User.class), any(EmailNotificationMessage.class));
+        Mockito.doReturn(CompletableFuture.completedFuture(true)).when(webNotifier).sendAsync(any(User.class), any(WebNotificationMessage.class));
+        Mockito.doReturn(CompletableFuture.completedFuture(true)).when(flushNotifier).sendAsync(any(User.class), any(NotificationMessage.class));
 
         Mockito.doReturn(emailNotifier).when(notifierResolver).resolve("email");
         Mockito.doReturn(webNotifier).when(notifierResolver).resolve("web");
@@ -195,8 +198,8 @@ public class NotificationServiceUnitTest {
                 .build());
 
         Mockito.verify(notifierResolver, Mockito.times(1)).resolve("email");
-        Mockito.verify(emailNotifier, Mockito.times(1)).send(eq(user), eq(emailMessage));
-        Mockito.verify(webNotifier, Mockito.times(1)).send(eq(user), eq(webMessage));
-        Mockito.verify(flushNotifier, Mockito.times(1)).send(eq(user), any(NotificationMessage.class));
+        Mockito.verify(emailNotifier, Mockito.times(1)).sendAsync(eq(user), eq(emailMessage));
+        Mockito.verify(webNotifier, Mockito.times(1)).sendAsync(eq(user), eq(webMessage));
+        Mockito.verify(flushNotifier, Mockito.times(1)).sendAsync(eq(user), any(NotificationMessage.class));
     }
 }
