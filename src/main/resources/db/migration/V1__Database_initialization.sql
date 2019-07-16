@@ -277,6 +277,7 @@ CREATE TABLE `user`
     `display_name`      VARCHAR(255),
     `first_name`        VARCHAR(255),
     `last_name`         VARCHAR(255),
+    `slug`              VARCHAR(50),
     `about`             TEXT,
     `status`            VARCHAR(50)        DEFAULT 'ACTIVE',
     `created_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -414,6 +415,7 @@ ALTER TABLE `user_role`
     ADD CONSTRAINT `fk-user_role-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 CREATE INDEX `idx-user-display_name` ON `user` (`display_name`);
+CREATE INDEX `idx-user-slug` ON `user` (`slug`);
 CREATE INDEX `idx-password-user_id` ON `password` (`user_id`);
 CREATE INDEX `idx-user_setting-user_id` ON `user_setting` (`user_id`);
 CREATE INDEX `idx-user_setting-setting_id` ON `user_setting` (`setting_id`);

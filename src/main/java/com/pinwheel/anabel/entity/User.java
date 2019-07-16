@@ -37,6 +37,8 @@ public class User implements UserDetails {
 
     private String lastName;
 
+    private String slug;
+
     @Type(type = "text")
     private String about;
 
