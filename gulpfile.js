@@ -87,8 +87,8 @@ gulp.task('js', function () {
     return gulp.src([srcDir + 'js/**/*.js'])
         .pipe(gulpif(!config.production, plumber({errorHandler: onError}), plumber()))
         .pipe(gulpif(config.maps, sourcemaps.init()))
-        .pipe(concat('scripts.min.js'))
         .pipe(uglify())
+        .pipe(rename({suffix: '.min'}))
         .pipe(gulpif(config.maps, sourcemaps.write('.', {sourceRoot: srcDir + 'js'})))
         .pipe(gulp.dest(destDir + 'js'))
         .pipe(gulpif(!config.production, notify(onComplete)));

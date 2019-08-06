@@ -1,6 +1,5 @@
 <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="/static/assets/css/style.min.css"/>
-    <link rel="stylesheet" href="/static/assets/css/icomoon.min.css"/>
+    <#include "../asset/css.ftl"/>
     <title>Anabel</title>
 </head>

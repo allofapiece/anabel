@@ -1,0 +1,15 @@
+<?xml version = "1.0"?>
+<root>
+    <parent>
+        <child1>Child 1</child1>
+        <child2>
+            <first>First</first>
+            <second>Second</second>
+        </child2>
+        <multy>
+            <child>Multy child 1</child>
+            <child>Multy child 2</child>
+            <child>Multy child 3</child>
+        </multy>
+    </parent>
+</root>

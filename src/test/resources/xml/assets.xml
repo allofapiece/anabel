@@ -1,0 +1,26 @@
+<?xml version = "1.0"?>
+<root>
+    <assets>
+        <!-- Css -->
+        <asset class="com.pinwheel.anabel.service.module.asset.entity.Css">
+            <templates>
+                <template>default</template>
+            </templates>
+            <href>/static/assets/css/default.min.css</href>
+        </asset>
+
+        <!-- Js -->
+        <asset class="com.pinwheel.anabel.service.module.asset.entity.Js">
+            <templates>
+                <template>default</template>
+            </templates>
+            <src>/static/assets/js/jquery.min.js</src>
+        </asset>
+        <asset class="com.pinwheel.anabel.service.module.asset.entity.Js">
+            <templates>
+                <template>default</template>
+            </templates>
+            <src>/static/assets/js/bootstrap.bundle.min.js?v=1551878494</src>
+        </asset>
+    </assets>
+</root>

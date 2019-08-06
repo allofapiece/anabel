@@ -57,6 +57,16 @@ public class AuthController {
     private final FlushNotificationMessageFactory flushNotificationMessageFactory;
 
     /**
+     * Returns template of login page.
+     *
+     * @return registration page path.
+     */
+    @GetMapping("/login")
+    public String login() {
+        return "auth/login";
+    }
+
+    /**
      * Returns template of registration page.
      *
      * @return registration page path.
