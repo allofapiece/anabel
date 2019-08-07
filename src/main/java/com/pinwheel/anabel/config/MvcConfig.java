@@ -1,13 +1,17 @@
 package com.pinwheel.anabel.config;
 
+import com.pinwheel.anabel.service.handler.AssetsMethodReturnValueHandler;
 import com.pinwheel.anabel.service.interceptor.FreeMarkerInterceptor;
 import com.pinwheel.anabel.service.interceptor.SecurityInterceptor;
+import com.pinwheel.anabel.service.module.asset.AssetManager;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -16,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -24,7 +29,10 @@ import java.util.Locale;
  * @version 1.0.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
+    private final AssetManager assetManager;
+
     /**
      * {@inheritDoc}
      */
@@ -85,6 +93,14 @@ public class MvcConfig implements WebMvcConfigurer {
 
         final FreeMarkerInterceptor freeMarkerInterceptor = new FreeMarkerInterceptor();
         registry.addInterceptor(freeMarkerInterceptor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+        handlers.add(new AssetsMethodReturnValueHandler(assetManager));
     }
 
     /**

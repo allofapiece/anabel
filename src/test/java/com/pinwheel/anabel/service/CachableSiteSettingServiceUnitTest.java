@@ -4,44 +4,32 @@ import com.pinwheel.anabel.entity.SiteSetting;
 import com.pinwheel.anabel.entity.SiteSettingType;
 import com.pinwheel.anabel.external.category.Unit;
 import com.pinwheel.anabel.repository.SiteSettingRepository;
-import com.pinwheel.anabel.service.converter.ConverterNotFoundException;
 import org.junit.experimental.categories.Category;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@TestPropertySource(locations = {
-        "/application-test.properties",
-        "/application-test-local.properties"
-})
 @Category(Unit.class)
 public class CachableSiteSettingServiceUnitTest {
 
-    @Autowired
-    private SiteSettingService siteSettingService;
+    @InjectMocks
+    private CachableSiteSettingService siteSettingService;
 
-    @MockBean
+    @Mock
     private SiteSettingRepository siteSettingRepository;
 
     @BeforeEach
     public void init() {
+        MockitoAnnotations.initMocks(this);
         siteSettingService.clearCache();
     }
 

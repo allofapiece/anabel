@@ -3,14 +3,11 @@ package com.pinwheel.anabel.service;
 import com.pinwheel.anabel.external.category.Unit;
 import com.pinwheel.anabel.repository.UserRepository;
 import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
@@ -18,20 +15,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@TestPropertySource(locations = {
-        "/application-test.properties",
-        "/application-test-local.properties"
-})
 @Category(Unit.class)
 public class SimpleSlugGeneratorUnitTest {
 
-    @Autowired
-    private SlugGenerator slugGenerator;
+    private SlugGenerator slugGenerator = new SimpleSlugGenerator();
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
+
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void shouldIterationOf() {

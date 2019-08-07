@@ -10,12 +10,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@TestPropertySource(locations = {
-        "/application-test.properties",
-        "/application-test-local.properties"
-})
 @Category(Unit.class)
 class InflectorUtilsUnitTest {
 
