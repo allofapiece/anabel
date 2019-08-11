@@ -237,7 +237,7 @@ $border-width:                1px;
 $border-color:                $gray-300;
 
 $border-radius:               .25rem;
-$border-radius-lg:            .3rem;
+$border-radius-lg:            .375rem;
 $border-radius-sm:            .2rem;
 
 $rounded-pill:                50rem;
@@ -780,6 +780,12 @@ $card-columns-gap:                  1.25rem;
 $card-columns-margin:               $card-spacer-y;
 
 
+// Spots
+
+$spot-bg-color:      $white;
+$spot-box-shadow:    $box-shadow;
+$spot-border-radius: $border-radius-lg;
+
 // Tooltips
 
 $tooltip-font-size:           $font-size-sm;
@@ -945,7 +951,7 @@ $breadcrumb-item-padding:           .5rem;
 
 $breadcrumb-margin-bottom:          1rem;
 
-$breadcrumb-bg:                     $gray-200;
+$breadcrumb-bg:                     $spot-bg-color;
 $breadcrumb-divider-color:          $gray-600;
 $breadcrumb-active-color:           $gray-600;
 $breadcrumb-divider:                "/";

@@ -11,3 +11,23 @@
     }
   }
 }
+
+.nav {
+  .nav-link:not(.active) {
+    &:hover {
+      background-color: lighten($primary, 38%);
+    }
+  }
+
+  &.flex-column {
+    .nav-link {
+      &:first-child {
+        @include border-radius($border-radius-lg $border-radius-lg 0 0);
+      }
+
+      &:last-child {
+        @include border-radius(0 0 $border-radius-lg $border-radius-lg);
+      }
+    }
+  }
+}

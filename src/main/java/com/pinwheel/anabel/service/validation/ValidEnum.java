@@ -32,7 +32,7 @@ public @interface ValidEnum {
      */
     String[] allowed();
 
-    String message() default "value is not valid";
+    String message() default "Value is not valid.";
 
     Class<?>[] groups() default {};
 

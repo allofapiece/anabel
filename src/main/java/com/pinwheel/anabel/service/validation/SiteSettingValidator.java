@@ -29,7 +29,7 @@ public class SiteSettingValidator implements ConstraintValidator<ValidSiteSettin
         boolean isValid = true;
 
         if (SiteSettingType.BOOLEAN.equals(value.getType()) && !List.of("true", "false").contains(value.getValue())) {
-            context.buildConstraintViolationWithTemplate("for boolean type value can has only `true` or `false` value")
+            context.buildConstraintViolationWithTemplate("For boolean type value can has only `true` or `false` value.")
                     .addPropertyNode("value")
                     .addConstraintViolation();
 
@@ -37,7 +37,7 @@ public class SiteSettingValidator implements ConstraintValidator<ValidSiteSettin
         }
 
         if (value.getId() == null && keyExists(value.getKey())) {
-            context.buildConstraintViolationWithTemplate("this key already exists")
+            context.buildConstraintViolationWithTemplate("This key already exists.")
                     .addPropertyNode("key")
                     .addConstraintViolation();
 
