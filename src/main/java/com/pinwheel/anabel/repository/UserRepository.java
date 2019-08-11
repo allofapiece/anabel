@@ -38,4 +38,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     @Query(nativeQuery = true, value = "select slug from user where slug regexp concat(:slug, '(-\\d+)*$')")
     List<String> findSlugsBySlugRegexp(@Param("slug") String slug);
+
+    boolean existsBySlug(String slug);
 }

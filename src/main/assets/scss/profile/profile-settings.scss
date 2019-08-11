@@ -1,0 +1,18 @@
+@import "../imports";
+
+#slug-form {
+  .uq-err-container {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 .5rem;
+    width: auto;
+
+    li {
+      list-style: none;
+
+      label {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

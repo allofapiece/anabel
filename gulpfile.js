@@ -128,12 +128,8 @@ gulp.task('build', ['clean'], function () {
     /**
      * Validation plugin
      */
-    gulp.src(['node_modules/jquery-validation/dist/jquery.validate.js'])
-        .pipe(uglify())
-        .pipe(rename({suffix: '.min'}))
+    gulp.src(['node_modules/jquery-validation/dist/**/*.js'])
         .pipe(gulp.dest(destDir + 'js/jquery-validation'));
-    gulp.src(['node_modules/jquery-validation/dist/localization/messages_*.min.js'])
-        .pipe(gulp.dest(destDir + 'js/jquery-validation/localization'));
 
     gulp.start('sass');
     gulp.start('css');

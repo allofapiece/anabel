@@ -10,3 +10,12 @@
   flex-direction: column;
 }
 
+.spot {
+  background-color: $spot-bg-color;
+  @include border-radius($spot-border-radius);
+  @include box-shadow($spot-box-shadow);
+}
+
+.spot-content {
+  padding: 1rem;
+}
