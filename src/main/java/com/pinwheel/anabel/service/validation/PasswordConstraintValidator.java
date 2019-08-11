@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -71,7 +72,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
      */
     private MessageResolver getMessageResolver() {
         String localeName = LocaleContextHolder.getLocale().getLanguage();
-        String fileName = "classpath:i18n/validation" +
+        String fileName = "classpath:i18n/forms" +
                 ("en".equals(localeName) ? "" : "_" + localeName) +
                 ".properties";
 
@@ -80,7 +81,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 
         try {
             FileInputStream inputStream = new FileInputStream(resource.getFile());
-            props.load(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
+            props.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 <#macro page>
     <html>
     <#include "head.ftl">
-    <body>
+    <body lang="${.lang}">
     <div id="app">
         <#include "header.ftl">
         <main class="flex-grow-1">

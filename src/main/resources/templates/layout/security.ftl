@@ -4,11 +4,11 @@
 
 <#if known>
     <#assign
-        user = Session.SPRING_SECURITY_CONTEXT.authentication.principal
-        email = user.getUsername()
-        displayName = user.getDisplayName()
-        isAdmin = user.isAdmin()
-        currentUserId = user.getId()
+        auth = Session.SPRING_SECURITY_CONTEXT.authentication.principal
+        email = auth.getUsername()
+        displayName = auth.getDisplayName()
+        isAdmin = auth.isAdmin()
+        currentUserId = auth.getId()
     >
 <#else>
     <#assign

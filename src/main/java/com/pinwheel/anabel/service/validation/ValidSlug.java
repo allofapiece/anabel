@@ -7,8 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.FIELD;
 
 /**
  * Annotation for {@link com.pinwheel.anabel.entity.SiteSetting} instance validation.
@@ -16,11 +15,11 @@ import static java.lang.annotation.ElementType.TYPE;
  * @version 1.0.0
  */
 @Documented
-@Constraint(validatedBy = SiteSettingValidator.class)
+@Constraint(validatedBy = SlugValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({TYPE, ANNOTATION_TYPE})
-public @interface ValidSiteSetting {
-    String message() default "Value is not valid.";
+@Target({FIELD})
+public @interface ValidSlug {
+    String message() default "{form.user-slug.slug.error.taken}";
 
     Class<?>[] groups() default {};
 

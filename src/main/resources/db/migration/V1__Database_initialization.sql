@@ -277,7 +277,7 @@ CREATE TABLE `user`
     `display_name`      VARCHAR(255),
     `first_name`        VARCHAR(255),
     `last_name`         VARCHAR(255),
-    `slug`              VARCHAR(50),
+    `slug`              VARCHAR(32),
     `about`             TEXT,
     `status`            VARCHAR(50)        DEFAULT 'ACTIVE',
     `created_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -462,8 +462,8 @@ CREATE INDEX `idx-user-email` ON `user` (`email`);
 CREATE INDEX `idx-user-confirmation_code` ON `user` (`confirmation_code`);
 CREATE INDEX `idx-user_role-user_id` ON `user_role` (`user_id`);
 
-INSERT INTO `user` (`id`, `email`, `display_name`, `status`, `created_at`, `updated_at`)
-VALUES (1, 'anabel.pinwheel@gmail.com', 'Admin', 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO `user` (`id`, `email`, `display_name`, `slug`, `status`, `created_at`, `updated_at`)
+VALUES (1, 'anabel.pinwheel@gmail.com', 'Admin', 'anabel-pinwheel', 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO `password` (`id`, `user_id`, `value`, `status`, `created_at`)
 VALUES (1, 1, '$2a$08$X5pFdPxOBbiqPiYoTmyn3O32y/6B/78fMwsBe1ilsQ3K3gzlL0S8e', 'ACTIVE', CURRENT_TIMESTAMP);
 

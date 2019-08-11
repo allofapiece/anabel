@@ -26,7 +26,7 @@ public class EnumValidator implements ConstraintValidator<ValidEnum, Enum> {
     @Override
     public boolean isValid(Enum value, ConstraintValidatorContext context) {
         if (!valueList.contains(value.toString())) {
-            context.buildConstraintViolationWithTemplate("value is not valid")
+            context.buildConstraintViolationWithTemplate("Value is not valid.")
                     .addConstraintViolation();
 
             return false;
