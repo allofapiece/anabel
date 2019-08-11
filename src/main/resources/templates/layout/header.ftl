@@ -1,5 +1,6 @@
 <#include "security.ftl">
 <#import "/spring.ftl" as spring>
+<#import "security.ftl" as security>
 
 <header>
     <nav class="navbar navbar-expand-md navbar-dark">
@@ -17,8 +18,8 @@
                         </li>
                     </#if>
                 </ul>
-                <#if user??>
-                    <a class="btn btn-primary" href="/profile"><@spring.message "link.account-profile"/></a>
+                <#if auth??>
+                    <a class="btn btn-primary" href="/${auth.slug!'slug'}"><@spring.message "link.account-profile"/></a>
                     <form class="ml-2 mb-0" action="/logout" method="post">
                         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         <button class="btn btn-secondary"

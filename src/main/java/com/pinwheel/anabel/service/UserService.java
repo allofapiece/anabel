@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
      */
     private final ApplicationEventPublisher eventPublisher;
 
-    private final NotificationService notificationService;
+    private final SlugGenerator slugGenerator;
 
     /**
      * {@inheritDoc}
@@ -80,6 +80,10 @@ public class UserService implements UserDetailsService {
 
         user.setStatus(Status.PENDING_VERIFICATION);
         user.setRoles(Collections.singleton(Role.USER));
+        user.setSlug(slugGenerator.slug(
+                user.getDisplayName(),
+                userRepository::findSlugsBySlugRegexp
+        ));
 
         this.setPasswordForUser(user, user.getPassword());
 

@@ -69,12 +69,12 @@ public class SiteSettingIntegrationTest {
         this.mockMvc.perform(post("/admin/settings/form").sessionAttr("_csrf", csrfToken).params(param))
                 .andDo(print())
                 .andExpect(status().is(200))
-                .andExpect(xpath(String.format(fieldXpath, "key", "1")).string(containsString("size must be")))
-                .andExpect(xpath(String.format(fieldXpath, "value", "1")).string(is("must not be empty")))
-                .andExpect(xpath(String.format(fieldXpath, "type", ".=\"must not be null\"")).exists())
-                .andExpect(xpath(String.format(fieldXpath, "type", ".=\"value is not valid\"")).exists())
-                .andExpect(xpath(String.format(fieldXpath, "status", ".=\"must not be null\"")).exists())
-                .andExpect(xpath(String.format(fieldXpath, "status", ".=\"value is not valid\"")).exists());
+                .andExpect(xpath(String.format(fieldXpath, "key", "1")).string(containsString("Size must be")))
+                .andExpect(xpath(String.format(fieldXpath, "value", "1")).string(is("Must not be empty.")))
+                .andExpect(xpath(String.format(fieldXpath, "type", ".=\"Must not be null.\"")).exists())
+                .andExpect(xpath(String.format(fieldXpath, "type", ".=\"Value is not valid.\"")).exists())
+                .andExpect(xpath(String.format(fieldXpath, "status", ".=\"Must not be null.\"")).exists())
+                .andExpect(xpath(String.format(fieldXpath, "status", ".=\"Value is not valid.\"")).exists());
     }
 
     @Test
@@ -94,8 +94,8 @@ public class SiteSettingIntegrationTest {
         this.mockMvc.perform(post("/admin/settings/form").sessionAttr("_csrf", csrfToken).params(param))
                 .andDo(print())
                 .andExpect(status().is(200))
-                .andExpect(xpath(String.format(fieldXpath, "key", 1)).string(containsString("this key already exists")))
-                .andExpect(xpath(String.format(fieldXpath, "value", 1)).string(is("for boolean type value can has only `true` or `false` value")))
+                .andExpect(xpath(String.format(fieldXpath, "key", 1)).string(containsString("This key already exists.")))
+                .andExpect(xpath(String.format(fieldXpath, "value", 1)).string(is("For boolean type value can has only `true` or `false` value.")))
                 .andExpect(xpath(String.format(fieldXpath, "type", 1)).doesNotExist())
                 .andExpect(xpath(String.format(fieldXpath, "status", 1)).doesNotExist());
     }

@@ -79,8 +79,8 @@ public class SiteSettingValidationTest {
 
         Set<ConstraintViolation<SiteSettingDto>> violations = validator.validate(siteSettingDto);
         assertEquals(2, violations.size());
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("for boolean type value can has only `true` or `false` value")));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("value is not valid")));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("For boolean type value can has only `true` or `false` value.")));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Value is not valid.")));
     }
 
     @Test
@@ -97,12 +97,12 @@ public class SiteSettingValidationTest {
         Set<ConstraintViolation<SiteSettingDto>> violations = validator.validate(siteSettingDto);
 
         assertEquals(6, violations.size());
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("must not be empty") && "value".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("must not be null") && "type".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("value is not valid") && "type".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("must not be null") && "status".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("value is not valid") && "status".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("size must be between 2 and 20") && "key".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Must not be empty.") && "value".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Must not be null.") && "type".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Value is not valid.") && "type".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Must not be null.") && "status".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Value is not valid.") && "status".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Size must be between 2 and 20.") && "key".equals(x.getPropertyPath().toString())));
     }
 
     @Test
@@ -113,12 +113,12 @@ public class SiteSettingValidationTest {
         Set<ConstraintViolation<SiteSettingDto>> violations = validator.validate(siteSettingDto);
         assertEquals(6, violations.size());
 
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("must not be empty") && "value".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("must not be null") && "status".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("value is not valid") && "status".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("must not be null") && "type".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("value is not valid") && "type".equals(x.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("must not be null") && "key".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Must not be empty.") && "value".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Must not be null.") && "status".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Value is not valid.") && "status".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Must not be null.") && "type".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Value is not valid.") && "type".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Must not be null.") && "key".equals(x.getPropertyPath().toString())));
     }
 
     @Test
@@ -134,7 +134,7 @@ public class SiteSettingValidationTest {
         Set<ConstraintViolation<SiteSettingDto>> violations = validator.validate(siteSettingDto);
 
         assertEquals(2, violations.size());
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("value is not valid") && x.getPropertyPath().toString().isEmpty()));
-        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("this key already exists") && "key".equals(x.getPropertyPath().toString())));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("Value is not valid.") && x.getPropertyPath().toString().isEmpty()));
+        assertTrue(violations.stream().anyMatch(x -> x.getMessage().equals("This key already exists.") && "key".equals(x.getPropertyPath().toString())));
     }
 }
