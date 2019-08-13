@@ -2,6 +2,7 @@ package com.pinwheel.anabel.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -13,6 +14,12 @@ import java.sql.Timestamp;
 @Builder
 @Entity
 public class Password {
+    public Password(Long id, String value) {
+        this();
+        this.id = id;
+        this.value = value;
+    }
+
     public Password(String value) {
         this();
         this.value = value;
@@ -30,6 +37,9 @@ public class Password {
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

@@ -29,6 +29,10 @@
                        data-toggle="pill" role="tab" aria-controls="general" aria-selected="true">
                         <@spring.message "profile.setting.general.tab"/>
                     </a>
+                    <a class="nav-link ${tab?matches('security')?string('active', '')}" id="security-tab" href="#security"
+                       data-toggle="pill" role="tab" aria-controls="security" aria-selected="true">
+                        <@spring.message "profile.setting.security.tab"/>
+                    </a>
                 </div>
             </div>
             <div class="col-6">
@@ -40,6 +44,16 @@
                             <hr/>
                             <div class="mt-4">
                                 <#include "slug.ftl"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade ${tab?matches('security')?string('show active', '')}" id="security"
+                         role="tabpanel" aria-labelledby="security-tab">
+                        <div class="spot-content">
+                            <h3><@spring.message "profile.setting.security.heading"/></h3>
+                            <hr/>
+                            <div class="mt-4">
+                                <#include "change-password.ftl"/>
                             </div>
                         </div>
                     </div>
