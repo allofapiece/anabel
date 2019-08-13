@@ -1,14 +1,15 @@
 package com.pinwheel.anabel.controller;
 
 import com.pinwheel.anabel.entity.User;
+import com.pinwheel.anabel.entity.dto.UserChangePasswordDto;
 import com.pinwheel.anabel.entity.dto.UserSlugDto;
 import com.pinwheel.anabel.repository.UserRepository;
 import com.pinwheel.anabel.service.SiteSettingService;
+import com.pinwheel.anabel.service.UserService;
 import com.pinwheel.anabel.service.notification.NotificationService;
 import com.pinwheel.anabel.service.notification.domain.Notification;
 import com.pinwheel.anabel.service.notification.factory.FlushNotificationMessageFactory;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,6 +41,10 @@ public class UserController {
     private final FlushNotificationMessageFactory flushNotificationMessageFactory;
 
     /**
+     * Inject of {@link UserService} bean.
+     */
+    private final UserService userService;
+    /**
      * Inject of {@link UserRepository} bean.
      */
     private final UserRepository userRepository;
@@ -69,6 +74,7 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User user
     ) {
+        model.addAttribute("userChangePasswordDto", new UserChangePasswordDto());
         model.addAttribute("userSlugDto", new UserSlugDto(user.getSlug()));
 
         return "user/settings/settings";
@@ -103,6 +109,7 @@ public class UserController {
             RedirectAttributes redirectAttributes,
             Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userChangePasswordDto", new UserChangePasswordDto());
             return "user/settings/settings";
         }
 
@@ -118,6 +125,36 @@ public class UserController {
                         flushNotificationMessageFactory.createSuccess(
                                 redirectAttributes,
                                 "user.slug.update.success")
+                ).build());
+
+        return "redirect:/user/settings";
+    }
+
+    /**
+     * Updates password.
+     *
+     * @return redirect to settings in success case.
+     */
+    @PostMapping("/user/settings/password")
+    @PreAuthorize("hasAuthority('USER')")
+    public String password(
+            @Valid UserChangePasswordDto userChangePasswordDto,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal User user,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+        if (bindingResult.hasErrors() || !userService.changePassword(user, userChangePasswordDto, bindingResult)) {
+            model.addAttribute("userSlugDto", new UserSlugDto(user.getSlug()));
+            return "user/settings/settings";
+        }
+
+        notificationService.send(Notification.builder()
+                .put(
+                        "flush",
+                        new User(),
+                        flushNotificationMessageFactory.createSuccess(
+                                redirectAttributes,
+                                "user.password.update.success")
                 ).build());
 
         return "redirect:/user/settings";
