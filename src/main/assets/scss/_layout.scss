@@ -19,3 +19,15 @@
 .spot-content {
   padding: 1rem;
 }
+
+.alert-dismissible {
+  padding-left: 0;
+  padding-right: 0;
+
+  .close {
+    position: relative;
+    top: auto;
+    left: auto;
+    padding: 0;
+  }
+}
