@@ -145,6 +145,8 @@ public class UserController {
             Model model) {
         if (bindingResult.hasErrors() || !userService.changePassword(user, userChangePasswordDto, bindingResult)) {
             model.addAttribute("userSlugDto", new UserSlugDto(user.getSlug()));
+            model.addAttribute("tab", "security");
+
             return "user/settings/settings";
         }
 

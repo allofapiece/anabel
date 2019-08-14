@@ -126,8 +126,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        // TODO make getting active password, not first of list.
-        return !this.getPasswords().isEmpty() ? this.getPasswords().get(0).getValue() : null;
+        return !this.getPasswords().isEmpty() ? this.getPasswords()
+                .stream()
+                .filter(p -> p.getStatus().equals(Status.ACTIVE))
+                .findFirst()
+                .get()
+                .getValue() : null;
     }
 
     public void addVerificationToken(VerificationToken verificationToken) {

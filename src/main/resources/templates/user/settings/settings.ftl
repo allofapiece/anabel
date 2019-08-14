@@ -4,6 +4,13 @@
 <#import "../../macro/bootstrap-form.ftl" as bf />
 
 <@n.page>
+    <#if tab?has_content && ['general', 'security']?seq_contains(tab)>
+        <#assign tab = tab />
+    <#elseif RequestParameters.tab?has_content && ['general', 'security']?seq_contains(RequestParameters.tab)>
+        <#assign tab = RequestParameters.tab />
+    <#else>
+        <#assign tab = 'general'/>
+    </#if>
     <div class="col-12">
         <div class="row">
             <div class="col-12 ">
@@ -17,11 +24,6 @@
         </div>
         <hr/>
         <div class="row">
-            <#if RequestParameters.tab?has_content && ['general', 'security']?seq_contains(RequestParameters.tab)>
-                <#assign tab = RequestParameters.tab />
-            <#else>
-                <#assign tab = 'general' />
-            </#if>
             <div class="col-3">
                 <div class="spot nav nav-pills flex-column" id="settings-tab" role="tablist"
                      aria-orientation="vertical">

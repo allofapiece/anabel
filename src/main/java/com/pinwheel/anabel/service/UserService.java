@@ -157,7 +157,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        setPasswordForUser(user, dto.getPassword(), false);
+        setPasswordForUser(user, dto.getPassword());
 
         userRepository.save(user);
 
