@@ -49,7 +49,14 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
             findProperty(obj, affectedObject);
         }
 
-        if (!getPasswordValue(obj, passwordPropertyName).equals(getPasswordValue(obj, confirmedPasswordPropertyName))) {
+        String password = getPasswordValue(obj, passwordPropertyName);
+        String confirmedPassword = getPasswordValue(obj, confirmedPasswordPropertyName);
+
+        if (password == null || confirmedPassword == null) {
+            return true;
+        }
+
+        if (!password.equals(confirmedPassword)) {
             context.buildConstraintViolationWithTemplate(message)
                     .addPropertyNode(affectedObject)
                     .addConstraintViolation();

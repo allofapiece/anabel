@@ -203,4 +203,21 @@ public class ProfileSettingsIntegrationTest {
                 .andExpect(xpath(slugFormXPath + "//*[@name=\"password\" and contains(@class, 'is-invalid')]").exists())
                 .andExpect(xpath(slugFormXPath + "//*[@name=\"password\"]/..//div[contains(@class, 'invalid-feedback')]/span[1]").string(containsString("You use this password already. Please, enter another.")));
     }
+
+    @Test
+    @Sql(value = {"/db/fixture/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/db/fixture/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void shouldRejectPasswordChangingIfPasswordIsBlank() throws Exception {
+        String slugFormXPath = "//*[@id=\"app\"]//*[@action=\"/user/settings/password\"]";
+
+        this.mockMvc.perform(post("/user/settings/password").params(new LinkedMultiValueMap<>()).with(csrf()))
+                .andDo(print())
+                .andExpect(status().is(200))
+                .andExpect(xpath(slugFormXPath + "//*[@name=\"oldPassword\" and contains(@class, 'is-invalid')]").exists())
+                .andExpect(xpath(slugFormXPath + "//*[@name=\"oldPassword\"]/..//div[contains(@class, 'invalid-feedback')]/span[1]").string(containsString("Must not be blank.")))
+                .andExpect(xpath(slugFormXPath + "//*[@name=\"password\" and contains(@class, 'is-invalid')]").exists())
+                .andExpect(xpath(slugFormXPath + "//*[@name=\"password\"]/..//div[contains(@class, 'invalid-feedback')]/span[1]").string(containsString("Must not be blank.")))
+                .andExpect(xpath(slugFormXPath + "//*[@name=\"confirmedPassword\" and contains(@class, 'is-invalid')]").exists())
+                .andExpect(xpath(slugFormXPath + "//*[@name=\"confirmedPassword\"]/..//div[contains(@class, 'invalid-feedback')]/span[1]").string(containsString("Must not be blank.")));
+    }
 }

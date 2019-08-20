@@ -69,7 +69,7 @@ public class SiteSettingIntegrationTest {
         this.mockMvc.perform(post("/admin/settings/form").sessionAttr("_csrf", csrfToken).params(param))
                 .andDo(print())
                 .andExpect(status().is(200))
-                .andExpect(xpath(String.format(fieldXpath, "key", "1")).string(containsString("Size must be")))
+                .andExpect(xpath(String.format(fieldXpath, "key", "1")).string(is("Must not be null.")))
                 .andExpect(xpath(String.format(fieldXpath, "value", "1")).string(is("Must not be empty.")))
                 .andExpect(xpath(String.format(fieldXpath, "type", ".=\"Must not be null.\"")).exists())
                 .andExpect(xpath(String.format(fieldXpath, "type", ".=\"Value is not valid.\"")).exists())
