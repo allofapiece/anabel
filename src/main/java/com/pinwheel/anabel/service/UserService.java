@@ -222,4 +222,8 @@ public class UserService implements UserDetailsService {
                 .findAny()
                 .ifPresent(activePassword -> activePassword.setStatus(Status.EXPIRED));
     }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 }

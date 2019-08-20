@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.config.bean.processor.post;
+package com.pinwheel.anabel.config.mvc;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;

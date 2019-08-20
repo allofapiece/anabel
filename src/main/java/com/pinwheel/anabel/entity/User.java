@@ -10,6 +10,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -144,5 +145,19 @@ public class User implements UserDetails {
 
     public VerificationToken getLastVerificationToken() {
         return !getVerificationTokens().isEmpty() ? getVerificationToken(getVerificationTokens().size() - 1) : null;
+    }
+
+    public String getFullName() {
+        String name = "";
+
+        if (!StringUtils.isEmpty(this.firstName)) {
+            name = this.firstName;
+        }
+
+        if (!StringUtils.isEmpty(this.lastName)) {
+            name = StringUtils.isEmpty(name) ? this.lastName : name + " " + this.lastName;
+        }
+
+        return StringUtils.isEmpty(name) ? this.displayName : name;
     }
 }

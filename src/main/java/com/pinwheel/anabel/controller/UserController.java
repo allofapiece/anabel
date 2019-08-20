@@ -2,7 +2,9 @@ package com.pinwheel.anabel.controller;
 
 import com.pinwheel.anabel.entity.User;
 import com.pinwheel.anabel.entity.dto.UserChangePasswordDto;
+import com.pinwheel.anabel.entity.dto.UserEditGeneralDto;
 import com.pinwheel.anabel.entity.dto.UserSlugDto;
+import com.pinwheel.anabel.exception.ResourceNotFoundException;
 import com.pinwheel.anabel.repository.UserRepository;
 import com.pinwheel.anabel.service.SiteSettingService;
 import com.pinwheel.anabel.service.UserService;
@@ -57,8 +59,67 @@ public class UserController {
      * @return user profile template path.
      */
     @GetMapping("/{slug:^(?!login$)[a-zA-Z\\-]+$}")
-    public String profile(@PathVariable("slug") String slug) {
+    public String profile(@PathVariable("slug") String slug, Model model) {
+        User user = userRepository.findBySlug(slug);
+
+        if (user == null) {
+            throw new ResourceNotFoundException();
+        }
+
+        model.addAttribute("user", user);
+
         return "user/profile";
+    }
+
+    @GetMapping("/user/edit")
+    @PreAuthorize("hasAuthority('USER')")
+    public String edit(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("userEditGeneralDto", UserEditGeneralDto.builder()
+                .displayName(user.getDisplayName())
+                .lastName(user.getLastName())
+                .firstName(user.getFirstName())
+                .about(user.getAbout())
+                .build());
+
+        return "user/edit/edit";
+    }
+
+    /**
+     * Updates user.
+     *
+     * @return
+     */
+    @PostMapping("/user/edit/general")
+    @PreAuthorize("hasAuthority('USER')")
+    public String editGeneral(
+            @Valid UserEditGeneralDto userEditGeneralDto,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal User user,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            return "user/edit/edit";
+        }
+
+        user.setFirstName(userEditGeneralDto.getFirstName());
+        user.setLastName(userEditGeneralDto.getLastName());
+        user.setDisplayName(userEditGeneralDto.getDisplayName());
+        user.setAbout(userEditGeneralDto.getAbout());
+
+        userService.save(user);
+
+        model.addAttribute("userEditGeneralDto", userEditGeneralDto);
+
+        notificationService.send(Notification.builder()
+                .put(
+                        "flush",
+                        new User(),
+                        flushNotificationMessageFactory.createSuccess(
+                                redirectAttributes,
+                                "user.edit.general.success")
+                ).build());
+
+        return "redirect:/user/edit";
     }
 
     /**

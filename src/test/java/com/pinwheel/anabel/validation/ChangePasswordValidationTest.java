@@ -61,6 +61,7 @@ public class ChangePasswordValidationTest {
     @Test
     public void shouldHaveOneLowerCaseCharacter() {
         var userChangePasswordDto = new UserChangePasswordDto();
+        userChangePasswordDto.setOldPassword("qqqq1111");
         userChangePasswordDto.setPassword("QQQQ1111");
         userChangePasswordDto.setConfirmedPassword("QQQQ1111");
 
