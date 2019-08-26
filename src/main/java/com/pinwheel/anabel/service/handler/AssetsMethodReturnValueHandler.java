@@ -59,4 +59,18 @@ public class AssetsMethodReturnValueHandler extends ViewNameMethodReturnValueHan
         template = template.replaceFirst("redirect:", "");
         return template.startsWith("/") ? template.substring(1) : template;
     }
+
+    /**
+     * Retrieves template name if it has the query parameters.
+     *
+     * @param template redirect string.
+     * @return template name.
+     */
+    protected String normalizeTemplate(String template) {
+        if (!template.contains("?")) {
+            return template;
+        }
+
+        return template.substring(0, template.indexOf("?") - 1);
+    }
 }

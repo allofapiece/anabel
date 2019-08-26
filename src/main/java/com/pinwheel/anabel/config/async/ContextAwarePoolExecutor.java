@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.config.bean;
+package com.pinwheel.anabel.config.async;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;

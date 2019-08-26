@@ -165,6 +165,7 @@ CREATE TABLE `password`
     `value`      VARCHAR(255),
     `status`     VARCHAR(50)        DEFAULT 'ACTIVE',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -273,10 +274,10 @@ CREATE TABLE `user`
     `id`                BIGINT    NOT NULL AUTO_INCREMENT,
     `image_id`          BIGINT,
     `confirmation_code` VARCHAR(255),
-    `email`             VARCHAR(255),
-    `display_name`      VARCHAR(255),
-    `first_name`        VARCHAR(255),
-    `last_name`         VARCHAR(255),
+    `email`             VARCHAR(63),
+    `display_name`      VARCHAR(31),
+    `first_name`        VARCHAR(15),
+    `last_name`         VARCHAR(15),
     `slug`              VARCHAR(32),
     `about`             TEXT,
     `status`            VARCHAR(50)        DEFAULT 'ACTIVE',

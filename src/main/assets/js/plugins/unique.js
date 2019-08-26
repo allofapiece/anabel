@@ -20,9 +20,9 @@
 
             $this.closest('form').validate({
                 rules: {
-                    [name]: $.extend({
+                    [name]: {
                         remote: settings.uqUrl
-                    })
+                    }
                 },
                 validClass: 'is-valid',
                 errorClass: 'is-invalid',

@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-gear:before {
+  content: "\e904";
+}
 .icon-pencil:before {
   content: "\e902";
 }

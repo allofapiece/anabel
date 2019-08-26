@@ -12,7 +12,6 @@ import javax.validation.ConstraintValidatorContext;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -43,8 +42,12 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
      */
     @Override
     public boolean isValid(final String password, final ConstraintValidatorContext context) {
+        if (password == null) {
+            return true;
+        }
+
         final PasswordValidator validator = new PasswordValidator(getMessageResolver(), Arrays.asList(
-                new LengthRule(8, 30),
+                new LengthRule(4, 18),
                 new CharacterRule(EnglishCharacterData.LowerCase, 1),
                 new WhitespaceRule())
         );

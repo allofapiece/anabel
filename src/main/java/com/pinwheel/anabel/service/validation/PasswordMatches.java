@@ -11,16 +11,20 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
-@Target({ TYPE, ANNOTATION_TYPE })
+@Target({TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = PasswordMatchesValidator.class)
 @Documented
 public @interface PasswordMatches {
+    String message() default "{form.user.password.error.match}";
 
-    String message() default "Passwords don't match";
+    String passwordPropertyName() default "password";
+
+    String confirmedPasswordPropertyName() default "confirmedPassword";
+
+    String affectedObject() default "";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
 }

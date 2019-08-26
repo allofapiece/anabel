@@ -10,6 +10,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -126,7 +127,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return !this.getPasswords().isEmpty() ? this.getPasswords().get(0).getValue() : null;
+        return !this.getPasswords().isEmpty() ? this.getPasswords()
+                .stream()
+                .filter(p -> p.getStatus().equals(Status.ACTIVE))
+                .findFirst()
+                .get()
+                .getValue() : null;
     }
 
     public void addVerificationToken(VerificationToken verificationToken) {
@@ -139,5 +145,19 @@ public class User implements UserDetails {
 
     public VerificationToken getLastVerificationToken() {
         return !getVerificationTokens().isEmpty() ? getVerificationToken(getVerificationTokens().size() - 1) : null;
+    }
+
+    public String getFullName() {
+        String name = "";
+
+        if (!StringUtils.isEmpty(this.firstName)) {
+            name = this.firstName;
+        }
+
+        if (!StringUtils.isEmpty(this.lastName)) {
+            name = StringUtils.isEmpty(name) ? this.lastName : name + " " + this.lastName;
+        }
+
+        return StringUtils.isEmpty(name) ? this.displayName : name;
     }
 }

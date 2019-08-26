@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.config.bean;
+package com.pinwheel.anabel.config.async;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.i18n.LocaleContext;

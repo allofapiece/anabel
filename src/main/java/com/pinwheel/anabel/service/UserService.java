@@ -1,9 +1,9 @@
 package com.pinwheel.anabel.service;
 
 import com.pinwheel.anabel.entity.*;
+import com.pinwheel.anabel.entity.dto.UserChangePasswordDto;
 import com.pinwheel.anabel.event.OnRegistrationCompleteEvent;
 import com.pinwheel.anabel.repository.UserRepository;
-import com.pinwheel.anabel.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.context.ApplicationEventPublisher;
@@ -13,9 +13,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * User service. Provides logic for users.
@@ -132,6 +134,36 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    public boolean changePassword(User user, UserChangePasswordDto dto, BindingResult bindingResult) {
+        if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+            bindingResult.rejectValue("oldPassword", "form.user.password.error.old");
+            return false;
+        }
+
+        if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            bindingResult.rejectValue("password", "form.user.password.error.current");
+            return false;
+        }
+
+        Optional<Password> usedPassword = user.getPasswords()
+                .stream()
+                .filter(password -> password.getStatus().equals(Status.EXPIRED))
+                .filter(password -> passwordEncoder.matches(dto.getPassword(), password.getValue()))
+                .findFirst();
+
+        if (usedPassword.isPresent()) {
+            bindingResult.rejectValue("password", "form.user.password.error.used",
+                    new Object[]{usedPassword.get().getUpdatedAt()}, "This password has been used.");
+            return false;
+        }
+
+        setPasswordForUser(user, dto.getPassword());
+
+        userRepository.save(user);
+
+        return true;
+    }
+
     /**
      * Sets new password for user. Determines whether need to use password encoder by passed {@code useEncoder}
      * parameter.
@@ -189,5 +221,9 @@ public class UserService implements UserDetailsService {
                 .filter(pass -> pass.getStatus().equals(Status.ACTIVE))
                 .findAny()
                 .ifPresent(activePassword -> activePassword.setStatus(Status.EXPIRED));
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

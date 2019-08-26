@@ -1,4 +1,4 @@
-package com.pinwheel.anabel.config;
+package com.pinwheel.anabel.config.mvc;
 
 import com.pinwheel.anabel.service.handler.AssetsMethodReturnValueHandler;
 import com.pinwheel.anabel.service.interceptor.FreeMarkerInterceptor;
