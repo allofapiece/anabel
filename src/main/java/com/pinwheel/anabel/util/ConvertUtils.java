@@ -1,10 +1,19 @@
 package com.pinwheel.anabel.util;
 
+import com.amazonaws.util.IOUtils;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -98,5 +107,31 @@ public class ConvertUtils {
         }
 
         return obj.toString();
+    }
+
+    public static File multipartFileToFile(MultipartFile multipartFile) {
+        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(multipartFile.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Can not convert multipart file to file.", e);
+        }
+
+        return file;
+    }
+
+    public static MultipartFile fileToMultipartFile(File file) {
+        MultipartFile multipartFile;
+
+        try (FileInputStream fis = new FileInputStream(file)){
+            // TODO find solution for this. file.getPath() with multipartFileToFile rewrite file.
+            multipartFile = new MockMultipartFile("file",
+                    file.getPath(), "text/plain", IOUtils.toByteArray(fis));
+        } catch (IOException e) {
+            throw new RuntimeException("Can not convert multipart file to file.", e);
+        }
+
+        return multipartFile;
     }
 }
