@@ -99,6 +99,13 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
+        <!-- AWS -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.11.618</version>
+        </dependency>
+
         <!-- Google -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -123,6 +130,12 @@
             <artifactId>spring-security-test</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.0.8.RELEASE</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
