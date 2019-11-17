@@ -1,16 +1,18 @@
 package com.pinwheel.anabel.controller;
 
 import com.pinwheel.anabel.entity.User;
-import com.pinwheel.anabel.entity.dto.CaptchaDto;
 import com.pinwheel.anabel.entity.dto.UserDto;
 import com.pinwheel.anabel.service.CaptchaService;
 import com.pinwheel.anabel.service.UserService;
 import com.pinwheel.anabel.service.notification.NotificationService;
+import com.pinwheel.anabel.service.notification.domain.Alert;
+import com.pinwheel.anabel.service.notification.domain.AlertAction;
+import com.pinwheel.anabel.service.notification.domain.FlushStatus;
 import com.pinwheel.anabel.service.notification.domain.Notification;
-import com.pinwheel.anabel.service.notification.domain.NotificationMessage;
 import com.pinwheel.anabel.service.notification.factory.FlushNotificationMessageFactory;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Describes logic of authentication, registration and etc. Generalizes logic of application security.
@@ -55,6 +59,11 @@ public class AuthController {
      * Inject of {@link FlushNotificationMessageFactory} bean.
      */
     private final FlushNotificationMessageFactory flushNotificationMessageFactory;
+
+    /**
+     * Injection of {@link MessageSource} bean.
+     */
+    private final MessageSource messageSource;
 
     /**
      * Returns template of login page.
@@ -96,12 +105,6 @@ public class AuthController {
             RedirectAttributes redirectAttributes,
             Model model
     ) {
-        CaptchaDto captchaDto = captchaService.verify(captcha);
-
-        if (!captchaDto.isSuccess()) {
-            model.addAttribute("captchaError", "auth.message.captcha.empty");
-        }
-
         boolean isConfirmEmpty = StringUtils.isEmpty(confirmedPassword);
 
         if (isConfirmEmpty) {
@@ -112,7 +115,7 @@ public class AuthController {
             model.addAttribute("passwordError", "Passwords are different!");
         }
 
-        if (isConfirmEmpty || bindingResult.hasErrors() || !captchaDto.isSuccess()) {
+        if (isConfirmEmpty || bindingResult.hasErrors()) {
             return "auth/signup";
         }
 
@@ -142,21 +145,41 @@ public class AuthController {
      * @return Login page.
      */
     @GetMapping("/activate/{token}")
-    public String activate(
-            @PathVariable String token,
-            RedirectAttributes redirectAttributes
-    ) {
+    public String activate(@PathVariable String token, Locale locale, RedirectAttributes redirectAttributes) {
         boolean isActivated = this.userService.activateUser(token);
 
-        NotificationMessage message = isActivated
-                ? flushNotificationMessageFactory.create("successActivation", redirectAttributes)
-                : flushNotificationMessageFactory.create("resendVerification", redirectAttributes, token);
+        redirectAttributes.addAttribute("token", token);
 
-        notificationService.send(Notification.builder()
-                .put("flush", new User(), message)
-                .build());
+        if (isActivated) {
+            redirectAttributes.addFlashAttribute("alert",
+                    new Alert(messageSource.getMessage(
+                            "auth.register.activation.verified", null, locale),
+                            "auth.register.activation.verified",
+                            "alert.signup.verified",
+                            FlushStatus.SUCCESS)
+            );
+        } else {
+            redirectAttributes.addFlashAttribute("alert",
+                    new Alert(messageSource.getMessage("auth.register.activation.expired", null, locale),
+                            "auth.register.activation.expired",
+                            "alert.signup.expired",
+                            FlushStatus.WARNING,
+                            List.of(new AlertAction(
+                                    messageSource.getMessage(
+                                            "auth.register.activation.expired.action",
+                                            null,
+                                            "Send again.",
+                                            locale
+                                    ),
+                                    "auth.register.activation.expired.action",
+                                    "/api/action/reactivate",
+                                    FlushStatus.ERROR
+                            ))
+                    )
+            );
+        }
 
-        return "redirect:/login";
+        return "redirect:/signin";
     }
 
     /**

@@ -4,7 +4,6 @@ import com.pinwheel.anabel.entity.User;
 import com.pinwheel.anabel.entity.dto.UserChangePasswordDto;
 import com.pinwheel.anabel.entity.dto.UserEditGeneralDto;
 import com.pinwheel.anabel.entity.dto.UserSlugDto;
-import com.pinwheel.anabel.exception.ResourceNotFoundException;
 import com.pinwheel.anabel.repository.UserRepository;
 import com.pinwheel.anabel.service.SiteSettingService;
 import com.pinwheel.anabel.service.UserService;
@@ -18,7 +17,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -53,24 +55,6 @@ public class UserController {
 
     private final SiteSettingService siteSettingService;
 
-    /**
-     * Returns user profile.
-     *
-     * @return user profile template path.
-     */
-    @GetMapping("/{slug:^(?!login$)[a-zA-Z\\-]+$}")
-    public String profile(@PathVariable("slug") String slug, Model model) {
-        User user = userRepository.findBySlug(slug);
-
-        if (user == null) {
-            throw new ResourceNotFoundException();
-        }
-
-        model.addAttribute("user", user);
-
-        return "user/profile";
-    }
-
     @GetMapping("/user/edit")
     @PreAuthorize("hasAuthority('USER')")
     public String edit(@AuthenticationPrincipal User user, Model model) {
@@ -86,8 +70,6 @@ public class UserController {
 
     /**
      * Updates user.
-     *
-     * @return
      */
     @PostMapping("/user/edit/general")
     @PreAuthorize("hasAuthority('USER')")
@@ -146,7 +128,7 @@ public class UserController {
      *
      * @return whether passed slug exists.
      */
-    @GetMapping("/user/settings/slug/verify")
+    @PostMapping("/user/settings/slug/verify")
     @PreAuthorize("hasAuthority('USER')")
     public @ResponseBody
     ResponseEntity<String> verifySlug(@RequestParam("slug") String slug) {

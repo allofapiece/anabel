@@ -40,4 +40,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<String> findSlugsBySlugRegexp(@Param("slug") String slug);
 
     boolean existsBySlug(String slug);
+
+    boolean existsBySlugAndIdNot(String slug, Long id);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
 }

@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
@@ -13,7 +14,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Password {
+public class Password implements Serializable {
     public Password(Long id, String value) {
         this();
         this.id = id;

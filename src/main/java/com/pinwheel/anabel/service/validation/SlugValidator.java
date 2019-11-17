@@ -8,9 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-/**
- * @version 1.0.0
- */
+
 @RequiredArgsConstructor
 public class SlugValidator implements ConstraintValidator<ValidSlug, String> {
     /**
@@ -35,9 +33,6 @@ public class SlugValidator implements ConstraintValidator<ValidSlug, String> {
         return !(slugExists(value) || ((List<String>) siteSettingService.getValue("slugTakenKeywords")).contains(value));
     }
 
-    /**
-     *
-     */
     private boolean slugExists(String slug) {
         return userRepository.existsBySlug(slug);
     }

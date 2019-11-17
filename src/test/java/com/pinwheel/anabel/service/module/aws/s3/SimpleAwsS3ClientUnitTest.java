@@ -45,10 +45,10 @@ class SimpleAwsS3ClientUnitTest {
 
     @Test
     public void shouldPutFileAndMultipartFile() throws IOException {
-        s3Client.put("testObject", resourceLoader.getResource("classpath:xml/assets.xml").getFile());
+        s3Client.put("testObject", resourceLoader.getResource("classpath:aws/text.txt").getFile());
         assertTrue(s3Client.doesObjectExists("testObject"));
 
-        s3Client.put("testObject2", ConvertUtils.fileToMultipartFile(resourceLoader.getResource("classpath:xml/assets.xml").getFile()));
+        s3Client.put("testObject2", ConvertUtils.fileToMultipartFile(resourceLoader.getResource("classpath:aws/text.txt").getFile()));
         assertTrue(s3Client.doesObjectExists("testObject2"));
     }
 }

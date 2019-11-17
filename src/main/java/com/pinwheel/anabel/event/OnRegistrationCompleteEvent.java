@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationEvent;
  *
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
     /**
      * Event related user.

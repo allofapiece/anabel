@@ -1,5 +1,7 @@
 package com.pinwheel.anabel.controller;
 
+import com.pinwheel.anabel.entity.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +23,7 @@ public class HomeController {
      */
     @GetMapping("/")
     public String home() {
-        return "homepage/home";
+        return "index";
     }
 
     /**
@@ -30,7 +32,7 @@ public class HomeController {
      * {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor LocaleChangeInterceptor} is not able to
      * intercept requests for controllers, which has been added by {@code addViewControllers} method of
      * {@link org.springframework.web.servlet.config.annotation.WebMvcConfigurer WebMvcConfigurer}.
-     *
+     * <p>
      * TODO find solution for this problem.
      *
      * @param locale current locale for active session.
@@ -38,7 +40,7 @@ public class HomeController {
      */
     @GetMapping("/lang")
     public @ResponseBody
-    Locale lang(Locale locale) {
+    Locale lang(Locale locale, @AuthenticationPrincipal User user) {
         return locale;
     }
 }

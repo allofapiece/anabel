@@ -2,6 +2,13 @@ package com.pinwheel.anabel.util;
 
 import org.springframework.util.StringUtils;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * Freemarker utils. Static helper methods freemarker templates.
  *
@@ -22,5 +29,21 @@ public class FreeMarkerUtils {
         }
 
         return attributes + "class=\"" + targetClass + "\"";
+    }
+
+    public static Map<String, Object> it(Object obj) throws IntrospectionException {
+        return Arrays.stream(Introspector.getBeanInfo(obj.getClass())
+                .getPropertyDescriptors())
+                .filter(pd -> pd.getReadMethod() != null)
+                .collect(Collectors.toMap(
+                        PropertyDescriptor::getName,
+                        pd -> {
+                            try {
+                                return pd.getReadMethod().invoke(null);
+                            } catch (ReflectiveOperationException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                ));
     }
 }

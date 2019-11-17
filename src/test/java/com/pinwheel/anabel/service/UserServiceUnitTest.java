@@ -29,6 +29,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(locations = {
@@ -144,21 +145,9 @@ public class UserServiceUnitTest {
 
         user.addVerificationToken(new VerificationToken("validToken"));
         assertNotNull(userService.createUser(user));
-        assertEquals("display-name", user.getSlug());
+        assertEquals("valid-name-valid-last-name", user.getSlug());
 
         Mockito.verify(notificationService, Mockito.times(1)).sendAsync(any(Notification.class));
-    }
-
-    @Test
-    public void shouldReturnNullIfUserAlreadyExists() {
-        User user = new User();
-        user.setEmail("existent@email.com");
-
-        Mockito.doReturn(user).when(userRepository).findByEmail("existent@email.com");
-
-        assertNull(userService.createUser(user));
-
-        Mockito.verify(notificationService, Mockito.never()).send(any(Notification.class));
     }
 
     @Test

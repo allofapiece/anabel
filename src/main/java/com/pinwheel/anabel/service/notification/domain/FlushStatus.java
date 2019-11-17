@@ -1,6 +1,7 @@
 package com.pinwheel.anabel.service.notification.domain;
 
 /**
+ * TODO review these status, use only statuses for vuetify alerts
  * Describes <a href="https://getbootstrap.com/docs/4.0/components/alerts/">bootstrap alerts</a>.
  *
  * @author Listratenko Stanislav
@@ -11,6 +12,7 @@ public enum FlushStatus {
     SECONDARY,
     SUCCESS,
     DANGER,
+    ERROR,
     WARNING,
     INFO,
     LIGHT,

@@ -271,7 +271,7 @@ CREATE TABLE `upload`
 
 CREATE TABLE `user`
 (
-    `id`                BIGINT    NOT NULL AUTO_INCREMENT,
+    `id`                BIGINT      NOT NULL AUTO_INCREMENT,
     `image_id`          BIGINT,
     `confirmation_code` VARCHAR(255),
     `email`             VARCHAR(63),
@@ -280,9 +280,9 @@ CREATE TABLE `user`
     `last_name`         VARCHAR(15),
     `slug`              VARCHAR(32),
     `about`             TEXT,
-    `status`            VARCHAR(50)        DEFAULT 'ACTIVE',
-    `created_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `updated_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `status`            VARCHAR(50)          DEFAULT 'ACTIVE',
+    `created_at`        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at`        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -347,7 +347,7 @@ ALTER TABLE `user`
 ALTER TABLE `password`
     ADD CONSTRAINT `fk-password-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `verification_token`
-    ADD CONSTRAINT `fk-verification_token-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+    ADD CONSTRAINT `fk-verification_token-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `user_setting`
     ADD CONSTRAINT `fk-user_setting-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `user_setting`
@@ -442,10 +442,6 @@ CREATE INDEX `idx-order-title` ON `order` (`title`);
 CREATE INDEX `idx-order-description` ON `order` (`description`);
 CREATE INDEX `idx-order-price` ON `order` (`price`);
 CREATE INDEX `idx-order_comment-order_id` ON `order_comment` (`order_id`);
-# CREATE INDEX `idx-order_commitment-order_id`      ON `order_commitment` (`order_id`);
-# CREATE INDEX `idx-order_commitment-commitment_id` ON `order_commitment` (`commitment_id`);
-# CREATE INDEX `idx-order_tag-order_id`             ON `order_tag` (`order_id`);
-# CREATE INDEX `idx-order_tag-tag_id`               ON `order_tag` (`tag_id`);
 CREATE INDEX `idx-order_upload-order_id` ON `order_upload` (`order_id`);
 CREATE INDEX `idx-order_view-order_id` ON `order_view` (`order_id`);
 CREATE INDEX `idx-rating-target_id` ON `rating` (`target_id`);
@@ -471,3 +467,6 @@ VALUES (1, 1, '$2a$08$X5pFdPxOBbiqPiYoTmyn3O32y/6B/78fMwsBe1ilsQ3K3gzlL0S8e', 'A
 INSERT INTO `user_role` (`user_id`, `roles`)
 VALUES (1, 'USER'),
        (1, 'ADMIN');
+
+INSERT INTO `site_setting` (`key`, `value`, `type`, `status`)
+values ('slugTakenKeywords', 'user shop', 'ARRAY_LIST', 'ACTIVE');
