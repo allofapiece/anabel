@@ -80,6 +80,7 @@ public class SimpleMailSender implements MailSender {
 
             mailSender.send(message);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             return false;
         }
 

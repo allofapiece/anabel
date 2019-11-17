@@ -74,16 +74,10 @@ public class UserService implements UserDetailsService {
      * @return true or false, denotes whether user has been saved.
      */
     public User createUser(User user) {
-        User userFromDb = userRepository.findByEmail(user.getEmail());
-
-        if (userFromDb != null) {
-            return null;
-        }
-
         user.setStatus(Status.PENDING_VERIFICATION);
         user.setRoles(Collections.singleton(Role.USER));
         user.setSlug(slugGenerator.slug(
-                user.getDisplayName(),
+                user.getFirstName() + " " + user.getLastName(),
                 userRepository::findSlugsBySlugRegexp
         ));
 

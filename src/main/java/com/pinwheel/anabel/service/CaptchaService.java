@@ -1,6 +1,6 @@
 package com.pinwheel.anabel.service;
 
-import com.pinwheel.anabel.entity.dto.CaptchaDto;
+import com.pinwheel.anabel.entity.dto.CaptchaResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,10 +38,18 @@ public class CaptchaService {
      * @param captcha captcha string.
      * @return captcha dto, that contains captcha status.
      */
-    public CaptchaDto verify(String captcha) {
+    public CaptchaResponseDto response(String captcha) {
         String url = String.format(CAPTCHA_URL, secret, captcha);
-        CaptchaDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaDto.class);
+        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
 
         return response;
+    }
+
+    public boolean verify(String captcha) {
+        return verify(response(captcha));
+    }
+
+    public boolean verify(CaptchaResponseDto captchaResponseDto) {
+        return captchaResponseDto.isSuccess();
     }
 }

@@ -2,6 +2,7 @@ package com.pinwheel.anabel.integration;
 
 import com.pinwheel.anabel.external.category.Integration;
 import com.pinwheel.anabel.repository.UserRepository;
+import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = {"/application-test.properties", "/application-test-local.properties"})
 @Category(Integration.class)
 @WithUserDetails(value = "mike@gmail.com", userDetailsServiceBeanName = "userService")
+@Ignore
 public class ProfileEditingIntegrationTest {
     @Autowired
     private WebApplicationContext context;

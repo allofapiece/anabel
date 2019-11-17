@@ -1,26 +1,25 @@
 package com.pinwheel.anabel.config.mvc;
 
-import com.pinwheel.anabel.service.handler.AssetsMethodReturnValueHandler;
 import com.pinwheel.anabel.service.interceptor.FreeMarkerInterceptor;
 import com.pinwheel.anabel.service.interceptor.SecurityInterceptor;
-import com.pinwheel.anabel.service.module.asset.AssetManager;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -31,14 +30,11 @@ import java.util.Locale;
 @Configuration
 @RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
-    private final AssetManager assetManager;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("auth/login");
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerCustomizer() {
+        return container -> {
+            container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/"));
+        };
     }
 
     /**
@@ -93,14 +89,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
         final FreeMarkerInterceptor freeMarkerInterceptor = new FreeMarkerInterceptor();
         registry.addInterceptor(freeMarkerInterceptor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-        handlers.add(new AssetsMethodReturnValueHandler(assetManager));
     }
 
     /**

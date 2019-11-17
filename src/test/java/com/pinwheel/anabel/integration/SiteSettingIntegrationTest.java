@@ -3,6 +3,7 @@ package com.pinwheel.anabel.integration;
 import com.pinwheel.anabel.entity.SiteSetting;
 import com.pinwheel.anabel.external.category.Integration;
 import com.pinwheel.anabel.service.SiteSettingService;
+import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = {"/application-test.properties", "/application-test-local.properties"})
 @Category(Integration.class)
 @WithMockUser(password = "Qqqq1111", username = "mike@gmail.com", authorities = {"USER", "ADMIN"})
+@Ignore
 public class SiteSettingIntegrationTest {
     @Autowired
     private WebApplicationContext context;

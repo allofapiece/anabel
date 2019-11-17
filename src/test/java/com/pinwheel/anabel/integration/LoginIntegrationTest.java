@@ -1,6 +1,7 @@
 package com.pinwheel.anabel.integration;
 
 import com.pinwheel.anabel.external.category.Integration;
+import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,11 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestPropertySource(locations = {"/application-test.properties", "/application-test-local.properties"})
 @Category(Integration.class)
+@Ignore
 public class LoginIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @Ignore
     public void shouldPermitHome() throws Exception {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
@@ -38,6 +41,7 @@ public class LoginIntegrationTest {
     }
 
     @Test
+    @Ignore
     @Sql(value = {"/db/fixture/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void shouldLogin() throws Exception {
         this.mockMvc.perform(formLogin().user("email", "mike@gmail.com").password("Qqqq1111"))
@@ -46,6 +50,7 @@ public class LoginIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void badCredentials() throws Exception {
         this.mockMvc.perform(post("/login").param("email", "john@invalid.email"))
                 .andDo(print())

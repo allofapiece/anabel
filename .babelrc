@@ -1,0 +1,26 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src/main/resources/assets/js"
+        ],
+        "alias": {
+          "test": "./src/main/resources/assets/js/test",
+          "underscore": "lodash"
+        }
+      }
+    ],
+    "transform-es2015-modules-commonjs"
+  ],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": true,
+        "modules": true
+      }
+    ]
+  ]
+}

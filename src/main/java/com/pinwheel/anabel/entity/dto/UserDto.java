@@ -1,6 +1,7 @@
 package com.pinwheel.anabel.entity.dto;
 
 import com.pinwheel.anabel.service.validation.PasswordMatches;
+import com.pinwheel.anabel.service.validation.UniqueEmail;
 import com.pinwheel.anabel.service.validation.ValidEmail;
 import com.pinwheel.anabel.service.validation.ValidPassword;
 import lombok.Data;
@@ -11,19 +12,25 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-@PasswordMatches
+@PasswordMatches(affectedObject = "confirmedPassword")
 public class UserDto {
     @ValidEmail()
+    @UniqueEmail
     private String email;
 
     @NotNull
-    @Size(min = 4, max = 20)
-    private String displayName;
+    @Size(min = 2, max = 15)
+    private String firstName;
 
+    @NotNull
+    @Size(min = 2, max = 15)
+    private String lastName;
+
+    @NotNull
     @ValidPassword
     private String password;
 
     @NotNull
-    @Size(min = 1, max = 32)
+    @Size(min = 4, max = 18)
     private String confirmedPassword;
 }

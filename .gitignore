@@ -11,8 +11,9 @@ runtime
 # node vendor dir
 node_modules
 
-# gulp cache
+# cache
 .gulp-scss-cache
+v8-compile-cache-0
 
 # local properties
 /**/*-local.properties
@@ -20,3 +21,7 @@ node_modules
 
 # compiled assets
 src/main/resources/static/assets
+dist
+
+# environmet
+.env

@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Data
@@ -21,6 +22,7 @@ public class SiteSetting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 3)
     private String key;
 
     @Enumerated(EnumType.STRING)
