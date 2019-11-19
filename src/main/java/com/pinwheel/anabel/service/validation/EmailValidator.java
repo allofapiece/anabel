@@ -1,5 +1,9 @@
 package com.pinwheel.anabel.service.validation;
 
+import com.pinwheel.anabel.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
@@ -10,7 +14,10 @@ import java.util.regex.Pattern;
  *
  * @version 1.0
  */
+@RequiredArgsConstructor
 public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
+    private final UserService userService;
+
     /**
      * Email pattern.
      */
@@ -33,7 +40,7 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
             return true;
         }
 
-        return validateEmail(username);
+        return validateEmail(username) && unique(username);
     }
 
     /**
@@ -46,5 +53,15 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
         Matcher matcher = Pattern.compile(EMAIL_PATTERN).matcher(email);
 
         return matcher.matches();
+    }
+
+    private boolean unique(final String email) {
+        try {
+            userService.loadUserByUsername(email);
+        } catch (UsernameNotFoundException ex) {
+            return true;
+        }
+
+        return false;
     }
 }

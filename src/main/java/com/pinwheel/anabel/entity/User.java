@@ -76,6 +76,10 @@ public class User implements UserDetails {
     @JsonView(Views.WithGeneral.class)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonView(Views.WithGeneral.class)
+    private Set<UserSocial> socials = new HashSet<>();
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     @JsonView(Views.WithGeneral.class)

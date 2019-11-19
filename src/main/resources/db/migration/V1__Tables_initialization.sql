@@ -271,7 +271,7 @@ CREATE TABLE `upload`
 
 CREATE TABLE `user`
 (
-    `id`                BIGINT      NOT NULL AUTO_INCREMENT,
+    `id`                BIGINT    NOT NULL AUTO_INCREMENT,
     `image_id`          BIGINT,
     `confirmation_code` VARCHAR(255),
     `email`             VARCHAR(63),
@@ -280,9 +280,9 @@ CREATE TABLE `user`
     `last_name`         VARCHAR(15),
     `slug`              VARCHAR(32),
     `about`             TEXT,
-    `status`            VARCHAR(50)          DEFAULT 'ACTIVE',
-    `created_at`        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `updated_at`        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `status`            VARCHAR(50)        DEFAULT 'ACTIVE',
+    `created_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -292,6 +292,29 @@ CREATE TABLE `verification_token`
     `user_id` BIGINT,
     `token`   VARCHAR(255),
     `expire`  TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `user_social`
+(
+    `id`                BIGINT    NOT NULL AUTO_INCREMENT,
+    `user_id`           BIGINT,
+    `social_network_id` BIGINT,
+    `link`              VARCHAR(255),
+    `created_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `social_network`
+(
+    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
+    `name`       VARCHAR(255) NOT NULL,
+    `protocol`   VARCHAR(10)  NOT NULL,
+    `domain`     VARCHAR(255) NOT NULL,
+    `icon`       VARCHAR(255),
+    `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -341,132 +364,3 @@ CREATE TABLE `user_role`
     `user_id` BIGINT NOT NULL,
     `roles`   VARCHAR(255)
 ) ENGINE = InnoDB;
-
-ALTER TABLE `user`
-    ADD CONSTRAINT `fk-user-image_id` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`);
-ALTER TABLE `password`
-    ADD CONSTRAINT `fk-password-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
-ALTER TABLE `verification_token`
-    ADD CONSTRAINT `fk-verification_token-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
-ALTER TABLE `user_setting`
-    ADD CONSTRAINT `fk-user_setting-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `user_setting`
-    ADD CONSTRAINT `fk-user_setting-allowed_setting_value_id` FOREIGN KEY (`allowed_setting_value_id`) REFERENCES `allowed_setting_value` (`id`);
-ALTER TABLE `user_setting`
-    ADD CONSTRAINT `fk-user_setting-setting_id` FOREIGN KEY (`setting_id`) REFERENCES `setting` (`id`);
-ALTER TABLE `allowed_setting_value`
-    ADD CONSTRAINT `fk-allowed_setting_value-setting_id` FOREIGN KEY (`setting_id`) REFERENCES `setting` (`id`);
-ALTER TABLE `city`
-    ADD CONSTRAINT `fk-city-country_id` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`);
-ALTER TABLE `faculty`
-    ADD CONSTRAINT `fk-faculty-establishment_id` FOREIGN KEY (`establishment_id`) REFERENCES `establishment` (`id`);
-ALTER TABLE `feedback`
-    ADD CONSTRAINT `fk-feedback-author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
-ALTER TABLE `feedback`
-    ADD CONSTRAINT `fk-feedback-target_id` FOREIGN KEY (`target_id`) REFERENCES `user` (`id`);
-ALTER TABLE `group`
-    ADD CONSTRAINT `fk-group-speciality_id` FOREIGN KEY (`speciality_id`) REFERENCES `speciality` (`id`);
-ALTER TABLE `message`
-    ADD CONSTRAINT `fk-message-author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
-ALTER TABLE `message`
-    ADD CONSTRAINT `fk-message-receiver_id` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`id`);
-ALTER TABLE `notification`
-    ADD CONSTRAINT `fk-notification-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `order`
-    ADD CONSTRAINT `fk-order-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `order_comment`
-    ADD CONSTRAINT `fk-order_comment-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `order_comment`
-    ADD CONSTRAINT `fk-order_comment-order_id` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
-ALTER TABLE `order_view`
-    ADD CONSTRAINT `fk-order_view-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `order_view`
-    ADD CONSTRAINT `fk-order_view-order_id` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
-ALTER TABLE `rating`
-    ADD CONSTRAINT `fk-rating-author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
-ALTER TABLE `rating`
-    ADD CONSTRAINT `fk-rating-target_id` FOREIGN KEY (`target_id`) REFERENCES `user` (`id`);
-ALTER TABLE `section`
-    ADD CONSTRAINT `fk-section-parent_id` FOREIGN KEY (`parent_id`) REFERENCES `section` (`id`);
-ALTER TABLE `setting`
-    ADD CONSTRAINT `fk-setting-section_id` FOREIGN KEY (`section_id`) REFERENCES `setting_section` (`id`);
-ALTER TABLE `speciality`
-    ADD CONSTRAINT `fk-speciality-faculty_id` FOREIGN KEY (`faculty_id`) REFERENCES `faculty` (`id`);
-ALTER TABLE `tag`
-    ADD CONSTRAINT `fk-tag-author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
-ALTER TABLE `thumbnail`
-    ADD CONSTRAINT `fk-thumbnail-image_id` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`);
-ALTER TABLE `company_user`
-    ADD CONSTRAINT `fk-company_user-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `company_user`
-    ADD CONSTRAINT `fk-company_user-company_id` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`);
-ALTER TABLE `company_order`
-    ADD CONSTRAINT `fk-company_order-order_id` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
-ALTER TABLE `company_order`
-    ADD CONSTRAINT `fk-company_order-company-id` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`);
-ALTER TABLE `order_commitment`
-    ADD CONSTRAINT `fk-order_commitment-commitment_id` FOREIGN KEY (`commitment_id`) REFERENCES `commitment` (`id`);
-ALTER TABLE `order_commitment`
-    ADD CONSTRAINT `fk-order_commitment-order_id` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
-ALTER TABLE `order_tag`
-    ADD CONSTRAINT `fk-order_tag-tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`);
-ALTER TABLE `order_tag`
-    ADD CONSTRAINT `fk-order_tag-order_id` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
-ALTER TABLE `user_role`
-    ADD CONSTRAINT `fk-user_role-user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-
-CREATE INDEX `idx-user-display_name` ON `user` (`display_name`);
-CREATE INDEX `idx-user-slug` ON `user` (`slug`);
-CREATE INDEX `idx-password-user_id` ON `password` (`user_id`);
-CREATE INDEX `idx-user_setting-user_id` ON `user_setting` (`user_id`);
-CREATE INDEX `idx-user_setting-setting_id` ON `user_setting` (`setting_id`);
-CREATE INDEX `idx-city-name` ON `city` (`name`);
-CREATE INDEX `idx-commitment-name` ON `commitment` (`name`);
-CREATE INDEX `idx-company-name` ON `company` (`name`);
-# CREATE INDEX `idx-company_user-company_id`        ON `company_user` (`company_id`);
-# CREATE INDEX `idx-company_user-user_id`           ON `company_user` (`user_id`);
-# CREATE INDEX `idx-company_order-company_id`       ON `company_order` (`company_id`);
-# CREATE INDEX `idx-company_order-user_id`          ON `company_order` (`order_id`);
-CREATE INDEX `idx-country-name` ON `country` (`name`);
-CREATE INDEX `idx-establishment-name` ON `establishment` (`name`);
-CREATE INDEX `idx-establishment-abbreviation` ON `establishment` (`abbreviation`);
-CREATE INDEX `idx-faculty-establishment_id` ON `faculty` (`establishment_id`);
-CREATE INDEX `idx-faculty-name` ON `faculty` (`name`);
-CREATE INDEX `idx-feedback-target_id` ON `feedback` (`target_id`);
-CREATE INDEX `idx-group-number` ON `group` (`number`);
-CREATE INDEX `idx-group-speciality_id` ON `group` (`speciality_id`);
-CREATE INDEX `idx-message-author_id` ON `message` (`author_id`);
-CREATE INDEX `idx-message-receiver_id` ON `message` (`receiver_id`);
-CREATE INDEX `idx-notification-user_id` ON `notification` (`user_id`);
-CREATE INDEX `idx-order-title` ON `order` (`title`);
-CREATE INDEX `idx-order-description` ON `order` (`description`);
-CREATE INDEX `idx-order-price` ON `order` (`price`);
-CREATE INDEX `idx-order_comment-order_id` ON `order_comment` (`order_id`);
-CREATE INDEX `idx-order_upload-order_id` ON `order_upload` (`order_id`);
-CREATE INDEX `idx-order_view-order_id` ON `order_view` (`order_id`);
-CREATE INDEX `idx-rating-target_id` ON `rating` (`target_id`);
-CREATE INDEX `idx-section-parent_id` ON `section` (`parent_id`);
-CREATE INDEX `idx-section-name` ON `section` (`name`);
-CREATE INDEX `idx-site_setting-key` ON `site_setting` (`key`);
-CREATE INDEX `idx-speciality-faculty_id` ON `speciality` (`faculty_id`);
-CREATE INDEX `idx-speciality-name` ON `speciality` (`name`);
-CREATE INDEX `idx-tag-name` ON `tag` (`name`);
-CREATE INDEX `idx-thumbnail-image_id` ON `thumbnail` (`image_id`);
-CREATE INDEX `idx-thumbnail-alias` ON `thumbnail` (`alias`);
-CREATE INDEX `idx-upload-title` ON `upload` (`title`);
-CREATE INDEX `idx-upload-user_id` ON `upload` (`user_id`);
-CREATE INDEX `idx-user-email` ON `user` (`email`);
-CREATE INDEX `idx-user-confirmation_code` ON `user` (`confirmation_code`);
-CREATE INDEX `idx-user_role-user_id` ON `user_role` (`user_id`);
-
-INSERT INTO `user` (`id`, `email`, `display_name`, `slug`, `status`, `created_at`, `updated_at`)
-VALUES (1, 'anabel.pinwheel@gmail.com', 'Admin', 'anabel-pinwheel', 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO `password` (`id`, `user_id`, `value`, `status`, `created_at`)
-VALUES (1, 1, '$2a$08$X5pFdPxOBbiqPiYoTmyn3O32y/6B/78fMwsBe1ilsQ3K3gzlL0S8e', 'ACTIVE', CURRENT_TIMESTAMP);
-
-INSERT INTO `user_role` (`user_id`, `roles`)
-VALUES (1, 'USER'),
-       (1, 'ADMIN');
-
-INSERT INTO `site_setting` (`key`, `value`, `type`, `status`)
-values ('slugTakenKeywords', 'user shop', 'ARRAY_LIST', 'ACTIVE');

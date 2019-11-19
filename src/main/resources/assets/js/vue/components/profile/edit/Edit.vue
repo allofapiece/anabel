@@ -25,6 +25,14 @@
                                     <v-list-item-title>General</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
+                            <v-list-item link to="/user/edit/social">
+                                <v-list-item-icon>
+                                    <v-icon>people</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title>Sharing</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
                         </v-list>
                     </v-navigation-drawer>
                 </v-card>

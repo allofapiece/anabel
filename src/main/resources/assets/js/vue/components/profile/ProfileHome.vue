@@ -28,9 +28,12 @@
             <v-col class="col-12 col-md-9">
                 <div class="spot">
                     <div class="spot-content">
-                        <h3>{{ this.fullName }}</h3>
+                        <div class="d-flex mb-2">
+                            <h3 class="display-1">{{ this.fullName }}</h3>
+                            <SocialList class="ml-auto" v-if="this.profile.socials" v-bind:socials="this.profile.socials"></SocialList>
+                        </div>
                         <blockquote v-if="this.profile.about">{{ this.profile.about }}</blockquote>
-                        <hr/>
+                        <hr class="mb-2"/>
                     </div>
                 </div>
             </v-col>
@@ -40,12 +43,14 @@
 
 <script>
     import profileUtil from 'util/profile'
-    import util from 'util/util'
     import userService from 'service/UserService'
-    import {mapState} from 'vuex'
+    import SocialList from 'vue/components/social/SocialList.vue'
     import empty from 'is-empty'
 
     export default {
+        components: {
+            SocialList
+        },
         data() {
             return {
                 profile: {},

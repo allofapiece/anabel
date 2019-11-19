@@ -23,6 +23,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             "/api/action/reactivate"
     };
 
+    private static final String[] API_RESOURCES = new String[]{
+            "/api/socials",
+    };
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.resourceId(RESOURCE_ID);
@@ -36,6 +40,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers(API_ACTIONS).permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers(API_RESOURCES).permitAll()
                 .and()
                 .requestMatchers().antMatchers(API, "/oauth/revoke/*")
                 .and()

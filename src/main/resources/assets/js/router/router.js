@@ -4,6 +4,7 @@ import ProfileHome from 'vue/components/profile/ProfileHome.vue'
 // User Edit
 import Edit from 'vue/components/profile/edit/Edit.vue'
 import EditGeneral from 'vue/components/profile/edit/general/General.vue'
+import EditSocial from 'vue/components/profile/edit/social/Social.vue'
 // User Settings
 import General from 'vue/components/profile/setting/General.vue'
 import Settings from 'vue/components/profile/setting/Settings.vue'
@@ -40,6 +41,10 @@ const routes = [
             {
                 path: 'general',
                 component: EditGeneral
+            },
+            {
+                path: 'social',
+                component: EditSocial
             },
         ]
     },

@@ -15,7 +15,6 @@ import javax.validation.constraints.Size;
 @PasswordMatches(affectedObject = "confirmedPassword")
 public class UserDto {
     @ValidEmail()
-    @UniqueEmail
     private String email;
 
     @NotNull

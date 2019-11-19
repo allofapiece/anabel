@@ -33,7 +33,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('USER')")
     @JsonView(Views.WithGeneral.class)
     public User current(@AuthenticationPrincipal User user) {
-        return user;
+        return userRepository.findById(user.getId()).get();
     }
 
     /**

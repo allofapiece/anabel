@@ -27,6 +27,18 @@ export class UserService {
 
         return true;
     }
+
+    getSocials(id) {
+        return this.api.getSocials(id)
+    }
+
+
+
+    async syncSocials() {
+        this.getSocials(store.getters['profile/profile'].id).then(data => {
+            store.commit('profile/socials', data.data._embedded['user-socials'])
+        })
+    }
 }
 
 export default new UserService()

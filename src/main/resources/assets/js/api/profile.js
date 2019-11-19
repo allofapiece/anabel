@@ -17,6 +17,14 @@ export default class ProfileApi extends Api {
         return this.instance.get(id)
     }
 
+    getSocials(id) {
+        return this.instance.get(`${id}/socials`, {
+            params: {
+                projection: 'withSocialNetwork'
+            }
+        })
+    }
+
     getBySlug(slug) {
         return this.instance.get(slug)
     }

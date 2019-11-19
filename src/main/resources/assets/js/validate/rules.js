@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from 'store/store'
+import isURL from 'validator/lib/isURL'
 
 export const lower = {
     validate: (value, {amount}) => (value.match(/[a-z]/g) || []).length >= amount,
@@ -49,4 +50,9 @@ export const remote = {
     },
     message: 'This {_field_} already taken.',
     params: ['url', 'authentication', 'method']
+}
+
+export const url = {
+    validate: isURL,
+    message: 'Url is not correct.',
 }

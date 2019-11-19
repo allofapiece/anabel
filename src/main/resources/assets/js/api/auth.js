@@ -4,7 +4,7 @@ const qs = require('querystring')
 
 export default class AuthApi extends Api {
     constructor(store) {
-        super(store)
+        super(store, [], ['oauth'])
 
         this.instance = this.builder.withConfig({
             baseURL: '/oauth',
