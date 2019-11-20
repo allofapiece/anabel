@@ -108,7 +108,7 @@
 
             },
             removeSocial(id) {
-                userSocials.delete(id)
+                userService.deleteSocial(id)
             },
             addEventListener: function () {
                 this.$root.$on('social.edit', (id) => this.editSocial(id))

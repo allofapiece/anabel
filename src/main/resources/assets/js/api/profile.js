@@ -25,6 +25,10 @@ export default class ProfileApi extends Api {
         })
     }
 
+    deleteSocial(userId, socialId) {
+        return this.instance.delete(`${userId}/socials/${socialId}`)
+    }
+
     getBySlug(slug) {
         return this.instance.get(slug)
     }

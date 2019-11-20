@@ -76,7 +76,7 @@ public class User implements UserDetails {
     @JsonView(Views.WithGeneral.class)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonView(Views.WithGeneral.class)
     private Set<UserSocial> socials = new HashSet<>();
 

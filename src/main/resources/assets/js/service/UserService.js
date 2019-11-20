@@ -32,7 +32,14 @@ export class UserService {
         return this.api.getSocials(id)
     }
 
+    deleteSocial(socialId, userId) {
+        if (!userId) {
+            userId = store.getters['profile/profile'].id
+            store.commit('profile/deleteSocial', socialId)
+        }
 
+        return this.api.deleteSocial(userId, socialId)
+    }
 
     async syncSocials() {
         this.getSocials(store.getters['profile/profile'].id).then(data => {

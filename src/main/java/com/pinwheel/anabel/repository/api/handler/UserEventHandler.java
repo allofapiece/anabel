@@ -4,10 +4,7 @@ import com.pinwheel.anabel.entity.User;
 import com.pinwheel.anabel.entity.UserSocial;
 import com.pinwheel.anabel.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.rest.core.annotation.HandleAfterCreate;
-import org.springframework.data.rest.core.annotation.HandleAfterDelete;
-import org.springframework.data.rest.core.annotation.HandleAfterSave;
-import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.data.rest.core.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -36,6 +33,11 @@ public class UserEventHandler {
 
     @HandleAfterDelete
     public void handleUserSocialDelete(UserSocial userSocial) {
+        syncUser();
+    }
+
+    @HandleAfterLinkDelete
+    public void handleUserSocialLinkDelete(UserSocial userSocial) {
         syncUser();
     }
 
