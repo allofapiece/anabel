@@ -36,6 +36,7 @@
                         <hr class="mb-2"/>
                     </div>
                 </div>
+                <Services></Services>
             </v-col>
         </v-row>
     </v-container>
@@ -45,11 +46,13 @@
     import profileUtil from 'util/profile'
     import userService from 'service/UserService'
     import SocialList from 'vue/components/social/SocialList.vue'
+    import Services from 'vue/components/service/Services.vue'
     import empty from 'is-empty'
 
     export default {
         components: {
-            SocialList
+            SocialList,
+            Services
         },
         data() {
             return {

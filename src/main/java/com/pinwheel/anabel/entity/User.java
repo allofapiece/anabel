@@ -1,5 +1,6 @@
 package com.pinwheel.anabel.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pinwheel.anabel.service.validation.UniqueEmail;
@@ -92,6 +93,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonView(Views.WithDependencies.class)
     private Set<OrderComment> orderComments = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonView(Views.WithDependencies.class)
+    private Set<Service> services = new HashSet<>();
 
     @ManyToMany(mappedBy = "employees")
     @JsonView(Views.WithDependencies.class)

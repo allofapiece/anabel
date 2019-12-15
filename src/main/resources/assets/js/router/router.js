@@ -14,6 +14,7 @@ import Home from "vue/pages/Home.vue";
 import SignIn from "vue/components/auth/SignIn.vue";
 import SignUp from "vue/components/auth/SignUp.vue";
 import Feed from "vue/components/feed/Feed.vue";
+import Service from "vue/components/service/Service.vue";
 
 Vue.use(VueRouter)
 
@@ -48,6 +49,8 @@ const routes = [
             },
         ]
     },
+
+    {path: '/services/:id', component: Service},
     {path: '/:slug?', component: ProfileHome},
     {path: '*', component: Home}
 ]

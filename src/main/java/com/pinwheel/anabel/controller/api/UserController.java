@@ -1,11 +1,15 @@
 package com.pinwheel.anabel.controller.api;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.pinwheel.anabel.entity.User;
 import com.pinwheel.anabel.entity.Views;
 import com.pinwheel.anabel.exception.ResourceNotFoundException;
 import com.pinwheel.anabel.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;

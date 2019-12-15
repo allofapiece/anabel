@@ -105,7 +105,6 @@
             },
             editSocial(id) {
                 console.log(id)
-
             },
             removeSocial(id) {
                 userService.deleteSocial(id)
